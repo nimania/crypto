@@ -78,3 +78,10 @@
 ## 2026-10-23 — hourly scheduling
 - User approved hourly reporting. Workflow cron changed from `21 */6 * * *` to `21 * * * *` (UTC minute 21 of each hour). Actual GitHub Actions start and GitHub Pages publication can be delayed. UI Refresh does not trigger a scan.
 - Track runtime (15-minute maximum), API throttling, failed coverage and source freshness before claiming hourly data completeness. This change schedules refreshes; it does not fix missing markets or mean every data provider updates hourly.
+
+## 2026-10-23 — network-specific watchlists and source observability
+- Display up to **10 watchlist entries per network** via the JSON candidates field; at most **8 globally receive in-depth enrichment**. Watchlist presence does not imply security, exit, or correlation analysis is complete.
+- Per-network status, UTC timestamp, endpoint counts and errors are now included in network_health.
+- Dashboard distinguishes partial data, source unavailable, and candidates awaiting deep analysis.
+- Known limitations: sampled discovery is not exhaustive. Provider outage or missing selected pools does not prove absence of opportunities. Overlap and duplicates between sources remain possible.
+- **Unverified until next GitHub Action run:** live performance on all chains and page rendering.
