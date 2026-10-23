@@ -2,6 +2,7 @@
 import json, os, time, math
 from correlation import measure
 from btc_structure import analyze_btc
+from btc_pivots import levels_from_completed_closes
 from safety import security_evm, liquidity_assessment, indicative_sell_impact
 from datetime import datetime, timezone
 from pathlib import Path
@@ -232,6 +233,7 @@ def main():
         btc_rows=[]
         print("BTC reference market data unavailable:",str(exc)[:160])
     btc_market_structure=analyze_btc(btc_rows)
+    btc_market_structure['derived_pivots']=levels_from_completed_closes(btc_rows)
     for item in selected:
         inspect(item,btc_rows)
         item['security_review']=security_evm(item['network'],item['contract'],fetch_json)
