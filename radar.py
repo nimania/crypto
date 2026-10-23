@@ -1,7 +1,7 @@
 """Hamzeh DEX Radar: research-only DEX candidate scanner; never signs or trades."""
 import json, os, time, math
 from correlation import measure
-from safety import security_evm, liquidity_assessment
+from safety import security_evm, liquidity_assessment, indicative_sell_impact
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -194,6 +194,7 @@ def main():
         inspect(item,btc_rows)
         item['security_review']=security_evm(item['network'],item['contract'],fetch_json)
         item['liquidity_review']=liquidity_assessment(item)
+        item['sell_impact_scenarios']=[indicative_sell_impact(item,trade_usd=n) for n in (500,1000,5000)]
         item['sellability']='NOT_SIMULATED'
         time.sleep(0.3)
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
