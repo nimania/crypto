@@ -66,3 +66,11 @@
 - Latest inspected Action run `39959943567` had three 404 errors for Flare endpoints.
 - The GeckoTerminal identifier in `radar.py` was corrected from `flare-network` to `flare` (verified on GeckoTerminal's Flare pools page). Commit `8bb23b3`.
 - **Pending:** a fresh Action run to verify the API response, pool counts and Pages deployment; code change alone does not prove live recovery.
+
+## 2026-10-23 — initial BTC market structure evidence (new)
+
+- Added `btc_structure.py` and `tests/test_btc_structure.py`. Reads BTC-USD daily candle closes from the existing Coinbase provider; outputs UTC close timestamp, observed daily move and weekly close direction (when enough data).
+- Added `btc_market_structure` to `output/radar.json` and connected BTC close/time/state to the dashboard.
+- IMPORTANT: historical 81–84k support and 87–88k resistance remain **unverified presets**. No breakout/breakdown announcement or autonomous level migration has been implemented. Persistence and proper structural level discovery remain required.
+- Latest feature commits are **not yet independently confirmed as deployed or exercised by a successful post-change Actions run**.
+- Before rollout acceptance: verify provider returned actual completed candles, unit tests passed, source timestamp is fresh, five-chain endpoint health is visible, and Flare after slug correction does not return 404.
