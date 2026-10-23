@@ -91,3 +91,10 @@
 - Included the preliminary derived_pivots field in radar.json and showed tentative values in the dashboard.
 - These values are not validated support/resistance zones, and there is no confirmed breakout logic or persistent market state yet.
 - Pending: real-data validation, comprehensive tests and verification of GitHub Pages after deployment.
+
+## 2026-10-23 — BTC close-confirmation monitor
+- New `btc_levels.py`: stores detected provisional weekly pivot zones, classifies a test vs two consecutive completed UTC daily closes beyond the whole zone, and records a bounded event history.
+- `radar.py` reads previous BTC state from last published Pages `radar.json`, then saves the updated `btc_levels` field in the next report. This is pragmatic cross-run continuity, **not a durable database**: deployment failure, cache or network errors can interrupt continuity.
+- UI shows current zone boundaries and evidence labels. Two daily closes are a provisional confirmation rule, NOT confirmation of a weekly candle close or guaranteed breakout; no trades occur.
+- Added unit tests in `tests/test_btc_levels.py`. Pending next successful Actions run, deployed view and market-data quality validation.
+- Follow-up: robust persistent storage, weekly candle close confirmation, level migration/retest state machine and additional historical test cases.
