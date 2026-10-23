@@ -14,7 +14,7 @@ Last checked: 2026-10-23. **Do not confuse target architecture with working code
 
 ## Actual data providers and API usage
 - DexScreener `/token-profiles/latest/v1`, `/token-boosts/latest/v1`, `/token-boosts/top/v1`; `/token-pairs/v1/{chain}/{address}`. Promoted/new feed is incomplete and biased.
-- GeckoTerminal `/api/v2/networks/{network}/{trending_pools|new_pools|pools}`, `/pools/{pool}/ohlcv/{day|week}`; sample/coverage limitations. `GECKO_NETWORKS`: base, arbitrum, flare-network (provisional), eth, solana.
+- GeckoTerminal `/api/v2/networks/{network}/{trending_pools|new_pools|pools}`, `/pools/{pool}/ohlcv/{day|week}`; sample/coverage limitations. `GECKO_NETWORKS`: base, arbitrum, flare (verified GeckoTerminal slug; requires fresh live run), eth, solana.
 - Coinbase public BTC-USD daily candles via `/products/BTC-USD/candles?granularity=86400...`. Separate provider and timestamp alignment must be checked.
 - GoPlus `/api/v1/token_security/{chain_id}?contract_addresses=...` only for `ethereum=1`, `base=8453`, `arbitrum=42161` in current code.
 - Flare and Solana security statuses from `security_evm` are `not_supported` rather than positive clearance.
