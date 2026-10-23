@@ -5,10 +5,18 @@ on:
     - cron: '21 */6 * * *'
 permissions:
   contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
 jobs:
-  scan:
+  scan-and-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -17,14 +25,15 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -v
       - name: Scan markets
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python radar.py
-      - name: Upload research report
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Build site
+        run: |
+          cp index.html output/index.html
+          touch output/.nojekyll
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: radar-report
           path: output/
-          if-no-files-found: warn
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
