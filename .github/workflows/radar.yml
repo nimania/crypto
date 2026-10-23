@@ -1,5 +1,7 @@
 name: Hamzeh DEX Radar
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '21 * * * *'
@@ -24,6 +26,18 @@ jobs:
           python-version: '3.11'
       - name: Run tests
         run: python -m unittest discover -s tests -v
+      - name: Validate dashboard structure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path("index.html").read_text(encoding="utf-8")
+          assert html.count("<script>") == 1
+          assert html.count("</script>") == 1
+          assert html.count("</html>") == 1
+          assert html.strip().endswith("</script></body></html>")
+          assert "async function load()" in html
+          print("Dashboard HTML structure OK")
+          PY
       - name: Scan markets
         run: python radar.py
       - name: Build site
