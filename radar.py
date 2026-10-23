@@ -206,11 +206,27 @@ def main():
     by_network={name:[] for name in NETWORKS}
     for item in sorted(candidates,key=lambda x:x["research_priority"],reverse=True):
         by_network[item["network"]].append(item)
+    # Network-specific watchlists must not be hidden by the global eight-item analysis budget.
+    per_network={network:items[:10] for network,items in by_network.items()}
     selected=[]
     while len(selected)<8 and any(by_network.values()):
         for network in NETWORKS:
             if by_network[network] and len(selected)<8:
                 selected.append(by_network[network].pop(0))
+    selected_ids={(x["network"],x["pool"]) for x in selected}
+    watchlist=[]
+    for network,items in per_network.items():
+        for item in items:
+            if (item["network"],item["pool"]) not in selected_ids:
+                item["detail_status"]="pending_deep_analysis"
+                item["btc_relationship"]={"status":"not_evaluated"}
+                item["security_review"]={"status":"not_evaluated"}
+                item["liquidity_review"]=liquidity_assessment(item)
+                item["sell_impact_scenarios"]=[]
+                item["sellability"]="NOT_SIMULATED"
+            else:
+                item["detail_status"]="deep_analysis_selected"
+            watchlist.append(item)
     try: btc_rows=btc_daily_rows()
     except Exception as exc:
         btc_rows=[]
@@ -226,14 +242,27 @@ def main():
     for item in candidates:
         source_health[item["network"]].setdefault("screened_candidates",0)
         source_health[item["network"]]["screened_candidates"]+=1
-    for item in selected:
+    for item in watchlist:
         source_health[item["network"]].setdefault("displayed_candidates",0)
         source_health[item["network"]]["displayed_candidates"]+=1
+    for network,h in source_health.items():
+        if h["successful_endpoints"]==0:
+            h["status"]="source_unavailable"
+        elif h.get("screened_candidates",0)==0:
+            h["status"]="no_eligible_pools_or_incomplete_coverage"
+        elif h.get("displayed_candidates",0)==0:
+            h["status"]="not_selected"
+        elif h["errors"]:
+            h["status"]="partial_data"
+        else:
+            h["status"]="data_available"
+        h["checked_at_utc"]=datetime.now(timezone.utc).isoformat()
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
         "networks":list(NETWORKS),"discovered_count":len(found)+len(candidates),"screened_count":len(candidates),
         "data_source_errors":source_errors,"network_health":source_health,
         "btc_market_structure":btc_market_structure,
-        "candidates":selected}
+        "deep_analyzed_count":len(selected),
+        "candidates":watchlist}
     (output/"radar.json").write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
     result=report(selected,len(found))
     (output/"report.md").write_text(result,encoding="utf-8")
