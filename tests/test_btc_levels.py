@@ -16,3 +16,10 @@ class BTCLevelTests(unittest.TestCase):
         result=monitor(rows,{},prev,now=start+5*86400)
         self.assertEqual(result["resistance_status"],"confirmed_daily_acceptance")
         self.assertEqual(len(result["events"]),1)
+
+    def test_weekly_close_is_separate_from_daily_signal(self):
+        start=1704067200
+        rows=[(start+i*86400,100+i) for i in range(4)]
+        result=monitor(rows,{"resistance":102},now=start+5*86400)
+        self.assertIn("weekly_confirmation",result)
+        self.assertEqual(result["weekly_confirmation"]["resistance"]["status"],"unavailable")
