@@ -29,6 +29,8 @@ async function load(){
   $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
   const support=levels.support;const resistance=levels.resistance;
+  const weekly=levels.weekly_confirmation||{};
+  const weekText=x=>x&&x.status==='weekly_close_outside_zone'?' | کندل هفتگی بیرون محدوده':x&&x.status==='weekly_close_not_outside_zone'?' | هفتگی تأیید نکرده':' | تأیید هفتگی نامشخص';
   if(support)$('btc-support').textContent='health.replaceChildren();
   for(const [chain,h] of Object.entries(d.network_health||{})){
    const item=document.createElement('div');item.className='network';
@@ -85,7 +87,7 @@ load();
 }
 $('refresh').onclick=load;
 load();
-</script></body></html>+money(support.upper)+' | '+statusText(levels.support_status);
+</script></body></html>+money(support.upper)+' | '+statusText(levels.support_status)+weekText(weekly.support);
   if(resistance)$('btc-resistance').textContent='health.replaceChildren();
   for(const [chain,h] of Object.entries(d.network_health||{})){
    const item=document.createElement('div');item.className='network';
@@ -142,7 +144,7 @@ load();
 }
 $('refresh').onclick=load;
 load();
-</script></body></html>+money(resistance.upper)+' | '+statusText(levels.resistance_status);
+</script></body></html>+money(resistance.upper)+' | '+statusText(levels.resistance_status)+weekText(weekly.resistance);
   const health=$('network-health');health.replaceChildren();
   for(const [chain,h] of Object.entries(d.network_health||{})){
    const item=document.createElement('div');item.className='network';
