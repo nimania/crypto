@@ -2,7 +2,7 @@ name: Hamzeh DEX Radar
 on:
   workflow_dispatch:
   schedule:
-    - cron: '21 */6 * * *'
+    - cron: '21 * * * *'
 permissions:
   contents: read
   pages: write
