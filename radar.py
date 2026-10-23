@@ -3,6 +3,7 @@ import json, os, time, math
 from correlation import measure
 from btc_structure import analyze_btc
 from btc_pivots import levels_from_completed_closes
+from btc_levels import monitor
 from safety import security_evm, liquidity_assessment, indicative_sell_impact
 from datetime import datetime, timezone
 from pathlib import Path
@@ -234,6 +235,14 @@ def main():
         print("BTC reference market data unavailable:",str(exc)[:160])
     btc_market_structure=analyze_btc(btc_rows)
     btc_market_structure['derived_pivots']=levels_from_completed_closes(btc_rows)
+    previous_levels=None
+    try:
+        previous_report=fetch_json("https://nimania.github.io/crypto/radar.json")
+        previous_levels=previous_report.get("btc_levels")
+    except Exception as exc:
+        print("Previous BTC state unavailable:",str(exc)[:150])
+    btc_levels=monitor(btc_rows,btc_market_structure['derived_pivots'],previous_levels)
+    btc_levels["history_source"]="last_published_pages_json" if previous_levels else "bootstrap_no_previous_state"
     for item in selected:
         inspect(item,btc_rows)
         item['security_review']=security_evm(item['network'],item['contract'],fetch_json)
@@ -262,7 +271,7 @@ def main():
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
         "networks":list(NETWORKS),"discovered_count":len(found)+len(candidates),"screened_count":len(candidates),
         "data_source_errors":source_errors,"network_health":source_health,
-        "btc_market_structure":btc_market_structure,
+        "btc_market_structure":btc_market_structure,"btc_levels":btc_levels,
         "deep_analyzed_count":len(selected),
         "candidates":watchlist}
     (output/"radar.json").write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
