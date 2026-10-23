@@ -34,7 +34,7 @@ python radar.py
 
 ## استقرار
 
-`.github/workflows/radar.yml` اسکن و انتشار Pages را هر ۶ ساعت (UTC: دقیقه ۲۱) یا دستی اجرا می‌کند. GitHub → Settings → Pages → Source: **GitHub Actions**. دکمه «تازه‌سازی» وب‌سایت اسکن جدید آغاز نمی‌کند، فقط آخرین JSON منتشرشده را بازخوانی می‌کند.
+`.github/workflows/radar.yml` اسکن و انتشار Pages را هر ساعت (UTC: دقیقه ۲۱) یا دستی اجرا می‌کند. GitHub → Settings → Pages → Source: **GitHub Actions**. دکمه «تازه‌سازی» وب‌سایت اسکن جدید آغاز نمی‌کند، فقط آخرین JSON منتشرشده را بازخوانی می‌کند.
 
 ## هنگام ادامه پروژه
 
