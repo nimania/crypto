@@ -51,3 +51,25 @@ def liquidity_assessment(item):
         return {"status":"reported_not_verified","usd_liquidity":liquidity,
                 "usd_volume_24h":volume,"execution_slippage":"NOT_MEASURED"}
     except (ValueError,TypeError):return {"status":"invalid_data"}
+
+def indicative_sell_impact(item, trade_usd=1000):
+    """Scenario only: 50/50 constant-product AMM with 0.30% hypothetical LP fee.
+    Reported pool liquidity is NOT a route quote, and V3/CLMMs are not modeled."""
+    import math
+    try:
+        pool=float(item.get("liquidity_usd") or 0)
+        amount=float(trade_usd)
+        if not math.isfinite(pool) or not math.isfinite(amount) or pool<=0 or amount<=0:
+            return {"status":"insufficient_data","execution_verified":False}
+        # A 50/50 pool has estimated quote-side inventory L/2.
+        quote_reserve=pool/2
+        effective=amount*(1-0.003)
+        estimated_out=quote_reserve*effective/(quote_reserve+effective)
+        impact_pct=100*(1-estimated_out/amount)
+        return {"status":"hypothetical_model_only","execution_verified":False,
+            "model":"unverified_50_50_constant_product","hypothetical_fee_pct":0.3,
+            "trade_usd":amount,"estimated_price_impact_pct":round(impact_pct,2),
+            "estimated_output_usd":round(estimated_out,2),
+            "warning":"Not an executable sell quote. Does not check token taxes, actual reserves, concentrated liquidity, route or gas."}
+    except (ValueError,TypeError,OverflowError):
+        return {"status":"insufficient_data","execution_verified":False}
