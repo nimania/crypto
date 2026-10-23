@@ -1,6 +1,7 @@
 """Hamzeh DEX Radar: research-only DEX candidate scanner; never signs or trades."""
 import json, os, time, math
 from correlation import measure
+from safety import security_evm, liquidity_assessment
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -189,7 +190,12 @@ def main():
     except Exception as exc:
         btc_rows=[]
         print("BTC reference market data unavailable:",str(exc)[:160])
-    for item in selected: inspect(item,btc_rows)
+    for item in selected:
+        inspect(item,btc_rows)
+        item['security_review']=security_evm(item['network'],item['contract'],fetch_json)
+        item['liquidity_review']=liquidity_assessment(item)
+        item['sellability']='NOT_SIMULATED'
+        time.sleep(0.3)
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
         "networks":list(NETWORKS),"discovered_count":len(found)+len(candidates),"screened_count":len(candidates),
         "data_source_errors":source_errors,
