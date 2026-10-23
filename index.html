@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hamzeh Crypto Radar</title><meta name="theme-color" content="#0b1220">
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#0b1220;color:#e8efff}
+*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:30px 20px 80px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+h1{font-size:clamp(26px,4vw,42px);margin:4px 0}h2{font-size:20px}p{line-height:1.9;color:#a8bad3}
+.eyebrow{letter-spacing:2px;color:#67d4c8;font-size:12px;direction:ltr;text-align:right}
+.card{border:1px solid #293b55;border-radius:18px;background:#131f31;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}
+.value{font-size:29px;font-weight:800;direction:ltr;text-align:right}
+.small{color:#9eb2cc;font-size:13px}button{background:#1b665e;color:#fff;border:0;border-radius:12px;padding:11px 17px;cursor:pointer}
+a{color:#76ded0;overflow-wrap:anywhere}.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pill{border:1px solid #3d5673;border-radius:99px;padding:5px 12px;font-size:12px;color:#c2d5eb}
+table{width:100%;border-collapse:collapse;min-width:650px}td,th{text-align:right;padding:13px;border-bottom:1px solid #273952}th{color:#aabdd5;font-size:13px}td{font-size:14px}
+.tablewrap{overflow-x:auto}.mono{font-family:ui-monospace,monospace;direction:ltr;text-align:right}
+.warn{background:#4b321d;color:#ffe0a5;border:1px solid #81552a;border-radius:12px;padding:12px;margin:18px 0}
+#status{margin:12px 0;color:#b5c9e5}.empty{padding:32px;text-align:center;color:#9eb2cc}
+footer{margin-top:28px;color:#8fa3bf;font-size:13px;line-height:2}
+@media(max-width:650px){.grid{grid-template-columns:1fr}main{padding:18px 12px 60px}}
+</style></head>
+<body><main>
+<header><div><div class="eyebrow">HAMZEH DEX RADAR · READ ONLY</div><h1>رادار کریپتوی حمزه</h1><p>کشف و بررسی فرصت‌ها در Base، Arbitrum و Flare؛ رصد روند روزانه و هفتگی</p></div><button id="refresh">تازه‌سازی گزارش</button></header>
+<div class="warn">نسخه آزمایشی: امتیازها فقط اولویت پژوهش هستند، نه سیگنال خرید یا فروش. امنیت قرارداد، امکان فروش و نقدشوندگی واقعی هنوز تأیید نشده‌اند.</div>
+<section class="grid">
+<div class="card"><div class="small">توکن‌های پیدا‌شده در منابع فعلی</div><div class="value" id="found">—</div></div>
+<div class="card"><div class="small">نامزدهای بررسی</div><div class="value" id="candidates">—</div></div>
+<div class="card"><div class="small">آخرین گزارش (UTC)</div><div id="updated" style="font-size:18px;margin-top:12px">—</div></div>
+</section>
+<section class="card"><div class="bar"><h2>فهرست فرصت‌ها</h2><span class="pill" id="source">منتظر دریافت داده</span></div><div id="status" role="status" aria-live="polite"></div>
+<div class="tablewrap"><table><thead><tr><th>توکن</th><th>شبکه</th><th>نقدینگی دلاری گزارش‌شده</th><th>حجم ۲۴ ساعت</th><th>امتیاز پژوهش</th><th>پایش شتاب</th><th>منبع</th></tr></thead><tbody id="rows"></tbody></table></div><div id="empty" class="empty" hidden>فعلاً نامزد واجد معیار ثبت نشده است. این به معنای نبود فرصت در بازار نیست.</div></section>
+<footer>این صفحه از خروجی اسکن GitHub Actions ساخته می‌شود. داده‌های ناقص یا نبود فهرست نباید به‌عنوان تأیید سلامت بازار تفسیر شوند. پایش کیف‌پول MetaMask و موتور ساختار بیت‌کوین هنوز اضافه نشده‌اند.</footer>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:0});
+function cell(tr,value,cls){const td=document.createElement('td');td.textContent=value;if(cls)td.className=cls;tr.append(td)}
+async function load(){
+el('status').textContent='در حال دریافت آخرین گزارش...';
+try{
+const r=await fetch('./radar.json?time='+Date.now(),{cache:'no-store'});
+if(!r.ok)throw new Error('HTTP '+r.status);
+const d=await r.json();if(!Array.isArray(d.candidates))throw new Error('ساختار گزارش معتبر نیست');
+el('found').textContent=fmt(d.discovered_count);el('candidates').textContent=fmt(d.candidates.length);
+el('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+el('source').textContent='گزارش ذخیره‌شده';el('status').textContent='توجه: اسکن فعلی تنها بخشی از بازار را پوشش می‌دهد.';
+el('rows').replaceChildren();el('empty').hidden=d.candidates.length>0;
+for(const item of d.candidates){const tr=document.createElement('tr');cell(tr,item.symbol||'?', 'mono');cell(tr,item.network||'?');cell(tr,'$'+fmt(item.liquidity_usd),'mono');cell(tr,'$'+fmt(item.volume_24h_usd),'mono');cell(tr,String(item.research_priority??'—'));cell(tr,item.exit_watch||'نامشخص');const td=document.createElement('td');if(item.market_url&&/^https:\/\//.test(item.market_url)){const a=document.createElement('a');a.href=item.market_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='مشاهده بازار';td.append(a)}else td.textContent='—';tr.append(td);el('rows').append(tr)}
+}catch(e){el('source').textContent='داده در دسترس نیست';el('status').textContent='گزارش هنوز منتشر نشده یا بارگذاری آن ناموفق بوده است: '+e.message;el('rows').replaceChildren();el('empty').hidden=false}
+}
+el('refresh').addEventListener('click',load);load();
+</script></body></html>
