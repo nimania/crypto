@@ -49,6 +49,24 @@ def monitor(rows, pivots, previous=None, now=None):
                    "zone_anchor":zone["anchor"]}
             output["events"].append(event)
             output["history"].append(event)
+    # Weekly confirmation requires the fully completed Sunday UTC daily candle.
+    # Do not treat two daily closes as a confirmed weekly breakdown/breakout.
+    last_sunday=next(((ts,close) for ts,close in reversed(points)
+                      if datetime.fromtimestamp(ts,timezone.utc).weekday()==6
+                      and all(ts-86400*i in daily for i in range(7))),None)
+    output["weekly_confirmation"]={}
+    for side in ("support","resistance"):
+        zone=output.get(side)
+        evidence={"status":"unavailable","week_ending_utc":None,"close_usd":None}
+        if zone and last_sunday:
+            ts,value=last_sunday
+            threshold=zone["lower"] if side=="support" else zone["upper"]
+            outside=value<threshold if side=="support" else value>threshold
+            evidence={"status":"weekly_close_outside_zone" if outside else "weekly_close_not_outside_zone",
+                      "week_ending_utc":datetime.fromtimestamp(ts+86400,timezone.utc).isoformat(),
+                      "close_usd":value,
+                      "daily_acceptance":output.get(side+"_status")=="confirmed_daily_acceptance"}
+        output["weekly_confirmation"][side]=evidence
     output["history"]=output["history"][-30:]
     output["latest_close_utc"]=datetime.fromtimestamp(last_ts+86400,timezone.utc).isoformat()
     return output
