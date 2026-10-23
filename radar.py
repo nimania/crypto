@@ -6,8 +6,8 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.parse import quote, urlencode
 
-NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare"}
-GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare-network"}
+NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare","ethereum":"ethereum","solana":"solana"}
+GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare-network","ethereum":"eth","solana":"solana"}
 DEX="https://api.dexscreener.com"
 GECKO="https://api.geckoterminal.com/api/v2"
 
@@ -25,19 +25,20 @@ def discover():
             continue
         for row in data if isinstance(data,list) else []:
             chain=str(row.get("chainId","")).lower()
+            if chain=="eth": chain="ethereum"
             address=row.get("tokenAddress")
             if chain in NETWORKS and address:
-                tokens[(chain,address.lower())]={"chain":chain,"address":address}
+                tokens[(chain,address if chain=="solana" else address.lower())]={"chain":chain,"address":address}
     return list(tokens.values())
 
 def best_pair(pairs,token):
-    eligible=[p for p in pairs if str(p.get("chainId","")).lower()==token["chain"]
-        and str(p.get("baseToken",{}).get("address","")).lower()==token["address"].lower()]
+    eligible=[p for p in pairs if str(p.get("chainId","")).lower() in ({token["chain"],"eth"} if token["chain"]=="ethereum" else {token["chain"]})
+        and (str(p.get("baseToken",{}).get("address",""))==token["address"] if token["chain"]=="solana" else str(p.get("baseToken",{}).get("address","")).lower()==token["address"].lower())]
     return max(eligible,key=lambda x:float((x.get("liquidity") or {}).get("usd") or 0),default=None)
 
 def screen(token):
     chain,address=token["chain"],token["address"]
-    pairs=fetch_json(f"{DEX}/token-pairs/v1/{chain}/{quote(address,safe='')}")
+    pairs=fetch_json(f"{DEX}/token-pairs/v1/{'ethereum' if chain=='ethereum' else chain}/{quote(address,safe='')}")
     pair=best_pair(pairs if isinstance(pairs,list) else [],token)
     if not pair: return None
     liquidity=float((pair.get("liquidity") or {}).get("usd") or 0)
@@ -100,7 +101,7 @@ def discover_gecko():
                         "research_priority":round(score,1),"contract_security":"NOT_VERIFIED",
                         "sellability":"NOT_VERIFIED","timeframes":{},"exit_watch":"INSUFFICIENT_DATA",
                         "discovery_source":endpoint}
-                    key=(chain,address.lower())
+                    key=(chain,address if chain=="solana" else address.lower())
                     if key not in candidates or candidates[key]["research_priority"]<entry["research_priority"]:
                         candidates[key]=entry
             except Exception as exc:
