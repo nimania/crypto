@@ -12,10 +12,24 @@ GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare-network","eth
 DEX="https://api.dexscreener.com"
 GECKO="https://api.geckoterminal.com/api/v2"
 
+_last_gecko_call=0.0
 def fetch_json(url):
-    req=Request(url,headers={"User-Agent":"HamzehRadar/0.1","Accept":"application/json"})
-    with urlopen(req,timeout=18) as response:
-        return json.load(response)
+    """Rate-limit GeckoTerminal requests and retry temporary throttling."""
+    global _last_gecko_call
+    from urllib.error import HTTPError
+    gecko=url.startswith(GECKO+"/")
+    for attempt in range(3):
+        if gecko:
+            remaining=8.0-(time.monotonic()-_last_gecko_call)
+            if remaining>0:time.sleep(remaining)
+            _last_gecko_call=time.monotonic()
+        req=Request(url,headers={"User-Agent":"HamzehRadar/0.2","Accept":"application/json"})
+        try:
+            with urlopen(req,timeout=18) as response:
+                return json.load(response)
+        except HTTPError as exc:
+            if exc.code!=429 or attempt==2:raise
+            time.sleep(12*(attempt+1))
 
 def discover():
     tokens={}
@@ -107,7 +121,6 @@ def discover_gecko():
                         candidates[key]=entry
             except Exception as exc:
                 errors.append(f"{chain}/{endpoint}: {str(exc)[:110]}")
-            time.sleep(6.2)
     return list(candidates.values()),errors
 
 def btc_daily_rows():
@@ -140,7 +153,6 @@ def inspect(item,btc_rows=None):
         url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/{period}?aggregate=1&limit=40&currency=usd"
         try: item["timeframes"][period]=momentum(candles(fetch_json(url)))
         except Exception as exc: item["timeframes"][period]={"status":"unavailable","reason":str(exc)[:100]}
-        time.sleep(0.4)
     d=item["timeframes"].get("day",{})
     w=item["timeframes"].get("week",{})
     if d.get("status")!="ok" or w.get("status")!="ok": return
@@ -184,8 +196,15 @@ def main():
             if item: candidates.append(item)
         except Exception as exc: print("Token unavailable:",token["chain"],str(exc)[:100])
         time.sleep(0.2)
-    candidates.sort(key=lambda x:x["research_priority"],reverse=True)
-    selected=candidates[:8]
+    # Avoid filling the entire shortlist from one network when other chains have data.
+    by_network={name:[] for name in NETWORKS}
+    for item in sorted(candidates,key=lambda x:x["research_priority"],reverse=True):
+        by_network[item["network"]].append(item)
+    selected=[]
+    while len(selected)<8 and any(by_network.values()):
+        for network in NETWORKS:
+            if by_network[network] and len(selected)<8:
+                selected.append(by_network[network].pop(0))
     try: btc_rows=btc_daily_rows()
     except Exception as exc:
         btc_rows=[]
