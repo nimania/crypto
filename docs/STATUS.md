@@ -118,3 +118,10 @@
 - Added btc_replay.py and historical_replay diagnostics to btc_levels: sequential retrospective classification using only earlier completed candle closes. This is descriptive in-sample replay with a fixed current zone, not a predictive backtest or an estimate of future profitability. True level discovery/retest accuracy still requires walk-forward out-of-sample validation.
 - Added tests/test_relative_strength.py with positive, missing-history and incomplete-candle scenarios.
 - Live Actions run and Pages deployment verification is pending; code committed does not establish live data validity.
+
+## 2026-10-23 — independent per-token profile
+- Added `coin.html`, an RTL read-only token research profile sourced exclusively from the latest published `radar.json`. Identity is the network+contract pair, not symbol (Solana address casing preserved).
+- Dashboard token symbols link to `coin.html?network=...&contract=...`; workflow copies and validates this new page for GitHub Pages.
+- Sections: identity, pool liquidity and synthetic impact, daily/weekly BTC correlation, relative strength at 7/30/90d, momentum, risk flags, data coverage and timestamps.
+- The profile is not a historic permanent page: if a token falls outside the latest sampled watchlist, it is unavailable. No fake security, sellability or signal status is produced.
+- **Awaiting verification:** new Action run, deployment, and browser-level interaction after publishing.
