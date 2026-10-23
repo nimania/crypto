@@ -86,10 +86,13 @@ def discover_gecko():
     """Independent pool discovery: new, trending and top pools per chain."""
     candidates={}
     errors=[]
+    health={chain:{"successful_endpoints":0,"raw_pools":0,"eligible_pools":0,"errors":[]} for chain in GECKO_NETWORKS}
     for chain,network in GECKO_NETWORKS.items():
         for endpoint in ("trending_pools","new_pools","pools"):
             try:
                 payload=fetch_json(f"{GECKO}/networks/{network}/{endpoint}?include=base_token&page=1")
+                health[chain]["successful_endpoints"]+=1
+                health[chain]["raw_pools"]+=len(payload.get("data",[]))
                 included={x.get("id"):x for x in payload.get("included",[])}
                 for record in payload.get("data",[]):
                     a=record.get("attributes") or {}
@@ -108,6 +111,7 @@ def discover_gecko():
                         age=max(0,(datetime.now(timezone.utc)-dt).total_seconds()/86400)
                     except (ValueError,TypeError): age=None
                     if liquidity<20000 or volume<10000 or age is None or age<1:continue
+                    health[chain]["eligible_pools"]+=1
                     score=40*min(liquidity/250000,1)+35*min(volume/100000,1)+25*min(age/30,1)
                     entry={"network":chain,"symbol":ta.get("symbol") or a.get("name") or "?",
                         "contract":token_addr,"pool":address,"dex":"GeckoTerminal",
@@ -121,7 +125,8 @@ def discover_gecko():
                         candidates[key]=entry
             except Exception as exc:
                 errors.append(f"{chain}/{endpoint}: {str(exc)[:110]}")
-    return list(candidates.values()),errors
+                health[chain]["errors"].append(f"{endpoint}: {str(exc)[:100]}")
+    return list(candidates.values()),errors,health
 
 def btc_daily_rows():
     """Public Coinbase BTC-USD completed daily candles for a comparable benchmark."""
@@ -189,7 +194,7 @@ def notify(message):
 def main():
     output=Path("output"); output.mkdir(exist_ok=True)
     found=discover()
-    candidates,source_errors=discover_gecko()
+    candidates,source_errors,source_health=discover_gecko()
     for token in found[:100]:
         try:
             item=screen(token)
@@ -216,9 +221,15 @@ def main():
         item['sell_impact_scenarios']=[indicative_sell_impact(item,trade_usd=n) for n in (500,1000,5000)]
         item['sellability']='NOT_SIMULATED'
         time.sleep(0.3)
+    for item in candidates:
+        source_health[item["network"]].setdefault("screened_candidates",0)
+        source_health[item["network"]]["screened_candidates"]+=1
+    for item in selected:
+        source_health[item["network"]].setdefault("displayed_candidates",0)
+        source_health[item["network"]]["displayed_candidates"]+=1
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
         "networks":list(NETWORKS),"discovered_count":len(found)+len(candidates),"screened_count":len(candidates),
-        "data_source_errors":source_errors,
+        "data_source_errors":source_errors,"network_health":source_health,
         "candidates":selected}
     (output/"radar.json").write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
     result=report(selected,len(found))
