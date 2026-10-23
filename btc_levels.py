@@ -1,5 +1,6 @@
 """Evidence-only BTC level monitor. Uses completed UTC daily closes, no price predictions."""
 from datetime import datetime, timezone
+from btc_reactions import classify_reaction
 
 def monitor(rows, pivots, previous=None, now=None):
     now = datetime.now(timezone.utc).timestamp() if now is None else now
@@ -67,6 +68,14 @@ def monitor(rows, pivots, previous=None, now=None):
                       "close_usd":value,
                       "daily_acceptance":output.get(side+"_status")=="confirmed_daily_acceptance"}
         output["weekly_confirmation"][side]=evidence
+    output["reactions"]={}
+    for side in ("support","resistance"):
+        prior_reaction=(prev.get("reactions") or {}).get(side)
+        # The existing acceptance classification is treated as prior break evidence.
+        if prev.get(side+"_status")=="confirmed_daily_acceptance":
+            prior_reaction={"status":"confirmed_break"}
+        output["reactions"][side]=classify_reaction(
+            rows,output.get(side),side,previous=prior_reaction,now=now)
     output["history"]=output["history"][-30:]
     output["latest_close_utc"]=datetime.fromtimestamp(last_ts+86400,timezone.utc).isoformat()
     return output
