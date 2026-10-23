@@ -1,6 +1,7 @@
 """Hamzeh DEX Radar: research-only DEX candidate scanner; never signs or trades."""
 import json, os, time, math
 from correlation import measure
+from relative_strength import relative_strength
 from btc_structure import analyze_btc
 from btc_pivots import levels_from_completed_closes
 from btc_levels import monitor
@@ -152,9 +153,13 @@ def token_daily_rows(item):
 def inspect(item,btc_rows=None):
     pool=item.get("pool")
     item["btc_relationship"]={"status":"unavailable"}
+    item["relative_strength"]={"status":"insufficient_data"}
     if not pool: return
     if btc_rows:
-        try: item["btc_relationship"]=measure(token_daily_rows(item),btc_rows)
+        try:
+            token_rows=token_daily_rows(item)
+            item["btc_relationship"]=measure(token_rows,btc_rows)
+            item["relative_strength"]=relative_strength(token_rows,btc_rows)
         except Exception as exc: item["btc_relationship"]={"status":"unavailable","reason":str(exc)[:100]}
     network=GECKO_NETWORKS[item["network"]]
     for period in ("day","week"):
@@ -222,6 +227,7 @@ def main():
             if (item["network"],item["pool"]) not in selected_ids:
                 item["detail_status"]="pending_deep_analysis"
                 item["btc_relationship"]={"status":"not_evaluated"}
+                item["relative_strength"]={"status":"not_evaluated"}
                 item["security_review"]={"status":"not_evaluated"}
                 item["liquidity_review"]=liquidity_assessment(item)
                 item["sell_impact_scenarios"]=[]
