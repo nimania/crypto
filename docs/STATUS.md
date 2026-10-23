@@ -98,3 +98,10 @@
 - UI shows current zone boundaries and evidence labels. Two daily closes are a provisional confirmation rule, NOT confirmation of a weekly candle close or guaranteed breakout; no trades occur.
 - Added unit tests in `tests/test_btc_levels.py`. Pending next successful Actions run, deployed view and market-data quality validation.
 - Follow-up: robust persistent storage, weekly candle close confirmation, level migration/retest state machine and additional historical test cases.
+
+## 2026-10-23 — weekly BTC close evidence and cached continuation
+- Added independent weekly close evidence in `btc_levels.py`, requiring a complete Monday–Sunday UTC daily sequence with a closed Sunday candle. Two daily closes are kept distinct from a weekly candle close; no weekly confirmation may be inferred when weekly history is missing.
+- Updated web UI to display daily and weekly evidence separately.
+- `radar.py` reads `state/btc_levels.json` (with last published JSON as fallback), persists the updated state locally and `radar.yml` restores/saves it using unique GitHub Actions cache keys with prefix restore. The cache is **not permanent or an authoritative financial ledger**, may expire/be evicted, and restoration ordering must be assessed after real runs.
+- Added a test for unavailable weekly confirmation; full multiweek regression, weekly break persistence, and historical backtesting remain pending.
+- **Deployment and actual live data still require checking the newest GitHub Actions run.** Do not claim verified weekly breakouts on current data until validated.
