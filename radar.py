@@ -105,7 +105,7 @@ def discover_gecko():
                         candidates[key]=entry
             except Exception as exc:
                 errors.append(f"{chain}/{endpoint}: {str(exc)[:110]}")
-            time.sleep(1.25)
+            time.sleep(6.2)
     return list(candidates.values()),errors
 
 def btc_daily_rows():
