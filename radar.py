@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 from urllib.parse import quote, urlencode
 
 NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare","ethereum":"ethereum","solana":"solana"}
-GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare-network","ethereum":"eth","solana":"solana"}
+GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare","ethereum":"eth","solana":"solana"}
 DEX="https://api.dexscreener.com"
 GECKO="https://api.geckoterminal.com/api/v2"
 
