@@ -1,5 +1,6 @@
 """Hamzeh DEX Radar: research-only DEX candidate scanner; never signs or trades."""
 import json, os, time, math
+from correlation import measure
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -65,9 +66,31 @@ def candles(payload):
     rows=(((payload or {}).get("data") or {}).get("attributes") or {}).get("ohlcv_list") or []
     return [float(r[4]) for r in sorted(rows,key=lambda x:x[0]) if len(r)>=5]
 
-def inspect(item):
+def btc_daily_rows():
+    """Public Coinbase BTC-USD completed daily candles for a comparable benchmark."""
+    from datetime import timedelta
+    end=datetime.now(timezone.utc).replace(hour=0,minute=0,second=0,microsecond=0)
+    start=end-timedelta(days=230)
+    url="https://api.exchange.coinbase.com/products/BTC-USD/candles?"+urlencode({
+        "granularity":86400,"start":start.isoformat(),"end":end.isoformat()})
+    rows=fetch_json(url)
+    return [(int(row[0]),float(row[4])) for row in rows if isinstance(row,list) and len(row)>=5]
+
+def token_daily_rows(item):
+    network=GECKO_NETWORKS[item["network"]]
     pool=item.get("pool")
+    url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/day?aggregate=1&limit=240&currency=usd"
+    data=fetch_json(url)
+    rows=(((data or {}).get("data") or {}).get("attributes") or {}).get("ohlcv_list") or []
+    return [(int(row[0]),float(row[4])) for row in rows if len(row)>=5]
+
+def inspect(item,btc_rows=None):
+    pool=item.get("pool")
+    item["btc_relationship"]={"status":"unavailable"}
     if not pool: return
+    if btc_rows:
+        try: item["btc_relationship"]=measure(token_daily_rows(item),btc_rows)
+        except Exception as exc: item["btc_relationship"]={"status":"unavailable","reason":str(exc)[:100]}
     network=GECKO_NETWORKS[item["network"]]
     for period in ("day","week"):
         url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/{period}?aggregate=1&limit=40&currency=usd"
@@ -95,6 +118,7 @@ def report(items,scanned):
             f"Liquidity (reported): USD {x['liquidity_usd']:,.0f}",
             f"24h volume (reported): USD {x['volume_24h_usd']:,.0f}",
             f"Day/week momentum status: {x['exit_watch']}",
+            f"BTC correlation: {x.get('btc_relationship',{})}",
             f"Contract: {x['contract']}",f"Market: {x.get('market_url') or 'unknown'}",""])
     lines.append("A momentum slowdown does not establish a market top. Missing weekly data blocks exit conclusions.")
     return "\n".join(lines)
@@ -118,7 +142,11 @@ def main():
         time.sleep(0.2)
     candidates.sort(key=lambda x:x["research_priority"],reverse=True)
     selected=candidates[:8]
-    for item in selected: inspect(item)
+    try: btc_rows=btc_daily_rows()
+    except Exception as exc:
+        btc_rows=[]
+        print("BTC reference market data unavailable:",str(exc)[:160])
+    for item in selected: inspect(item,btc_rows)
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
         "networks":list(NETWORKS),"discovered_count":len(found),"screened_count":len(candidates),
         "candidates":selected}
@@ -126,7 +154,6 @@ def main():
     result=report(selected,len(found))
     (output/"report.md").write_text(result,encoding="utf-8")
     print(result)
-    try: notify(result)
-    except Exception as exc: print("Telegram delivery failed:",str(exc)[:120])
+    # Web dashboard is the only reporting channel; no Telegram notifications.
 
 if __name__=="__main__": main()
