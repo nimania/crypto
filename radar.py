@@ -236,13 +236,22 @@ def main():
     btc_market_structure=analyze_btc(btc_rows)
     btc_market_structure['derived_pivots']=levels_from_completed_closes(btc_rows)
     previous_levels=None
-    try:
-        previous_report=fetch_json("https://nimania.github.io/crypto/radar.json")
-        previous_levels=previous_report.get("btc_levels")
-    except Exception as exc:
-        print("Previous BTC state unavailable:",str(exc)[:150])
+    state_path=Path("state/btc_levels.json")
+    if state_path.exists():
+        try:
+            previous_levels=json.loads(state_path.read_text(encoding="utf-8"))
+        except (OSError,ValueError) as exc:
+            print("Persisted BTC state invalid:",str(exc)[:150])
+    if previous_levels is None:
+        try:
+            previous_report=fetch_json("https://nimania.github.io/crypto/radar.json")
+            previous_levels=previous_report.get("btc_levels")
+        except Exception as exc:
+            print("Previous BTC state unavailable:",str(exc)[:150])
     btc_levels=monitor(btc_rows,btc_market_structure['derived_pivots'],previous_levels)
-    btc_levels["history_source"]="last_published_pages_json" if previous_levels else "bootstrap_no_previous_state"
+    btc_levels["history_source"]="persisted_state_or_last_published_json" if previous_levels else "bootstrap_no_previous_state"
+    state_path.parent.mkdir(parents=True,exist_ok=True)
+    state_path.write_text(json.dumps(btc_levels,ensure_ascii=False,indent=2),encoding="utf-8")
     for item in selected:
         inspect(item,btc_rows)
         item['security_review']=security_evm(item['network'],item['contract'],fetch_json)
