@@ -91,7 +91,7 @@ This example is a **schema illustration**, not live market output; do not publis
 
 ## Runtime and Pages
 - Run: `python -m unittest discover -s tests -v`; `python radar.py`.
-- Workflow schedule cron `21 */6 * * *` UTC, plus `workflow_dispatch`. Execution times can be delayed. Current job timeout **15 min**.
+- Workflow schedule cron `21 * * * *` UTC, plus `workflow_dispatch`. Execution times can be delayed. Current job timeout **15 min**.
 - `output/radar.json`, `output/report.md`; `output/index.html` copied from root; `output/.nojekyll` set; deployment with `actions/upload-pages-artifact@v3` and `actions/deploy-pages@v4`.
 - GitHub Pages Settings → Source = GitHub Actions. Published URL `https://nimania.github.io/crypto/`.
 - Site 'Refresh' only reloads most recent published JSON and never triggers backend scan. Public repository and Pages may expose public wallet addresses if added to output; consider privacy and consent.
