@@ -74,3 +74,7 @@
 - IMPORTANT: historical 81–84k support and 87–88k resistance remain **unverified presets**. No breakout/breakdown announcement or autonomous level migration has been implemented. Persistence and proper structural level discovery remain required.
 - Latest feature commits are **not yet independently confirmed as deployed or exercised by a successful post-change Actions run**.
 - Before rollout acceptance: verify provider returned actual completed candles, unit tests passed, source timestamp is fresh, five-chain endpoint health is visible, and Flare after slug correction does not return 404.
+
+## 2026-10-23 — hourly scheduling
+- User approved hourly reporting. Workflow cron changed from `21 */6 * * *` to `21 * * * *` (UTC minute 21 of each hour). Actual GitHub Actions start and GitHub Pages publication can be delayed. UI Refresh does not trigger a scan.
+- Track runtime (15-minute maximum), API throttling, failed coverage and source freshness before claiming hourly data completeness. This change schedules refreshes; it does not fix missing markets or mean every data provider updates hourly.
