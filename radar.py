@@ -1,0 +1,132 @@
+"""Hamzeh DEX Radar: research-only DEX candidate scanner; never signs or trades."""
+import json, os, time, math
+from datetime import datetime, timezone
+from pathlib import Path
+from urllib.request import Request, urlopen
+from urllib.parse import quote, urlencode
+
+NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare"}
+GECKO_NETWORKS={"base":"base","arbitrum":"arbitrum","flare":"flare-network"}
+DEX="https://api.dexscreener.com"
+GECKO="https://api.geckoterminal.com/api/v2"
+
+def fetch_json(url):
+    req=Request(url,headers={"User-Agent":"HamzehRadar/0.1","Accept":"application/json"})
+    with urlopen(req,timeout=18) as response:
+        return json.load(response)
+
+def discover():
+    tokens={}
+    for endpoint in ("/token-profiles/latest/v1","/token-boosts/latest/v1","/token-boosts/top/v1"):
+        try: data=fetch_json(DEX+endpoint)
+        except Exception as exc:
+            print("Discovery source unavailable:",endpoint,str(exc)[:150])
+            continue
+        for row in data if isinstance(data,list) else []:
+            chain=str(row.get("chainId","")).lower()
+            address=row.get("tokenAddress")
+            if chain in NETWORKS and address:
+                tokens[(chain,address.lower())]={"chain":chain,"address":address}
+    return list(tokens.values())
+
+def best_pair(pairs,token):
+    eligible=[p for p in pairs if str(p.get("chainId","")).lower()==token["chain"]
+        and str(p.get("baseToken",{}).get("address","")).lower()==token["address"].lower()]
+    return max(eligible,key=lambda x:float((x.get("liquidity") or {}).get("usd") or 0),default=None)
+
+def screen(token):
+    chain,address=token["chain"],token["address"]
+    pairs=fetch_json(f"{DEX}/token-pairs/v1/{chain}/{quote(address,safe='')}")
+    pair=best_pair(pairs if isinstance(pairs,list) else [],token)
+    if not pair: return None
+    liquidity=float((pair.get("liquidity") or {}).get("usd") or 0)
+    volume=float((pair.get("volume") or {}).get("h24") or 0)
+    created=pair.get("pairCreatedAt")
+    age=(time.time()*1000-created)/86400000 if isinstance(created,(int,float)) else None
+    if liquidity<50000 or volume<20000 or age is None or age<2: return None
+    score=40*min(liquidity/250000,1)+35*min(volume/100000,1)+25*min(age/30,1)
+    return {"network":chain,"symbol":pair.get("baseToken",{}).get("symbol","?"),
+        "contract":address,"pool":pair.get("pairAddress"),"dex":pair.get("dexId"),
+        "market_url":pair.get("url"),"liquidity_usd":liquidity,
+        "volume_24h_usd":volume,"age_days":round(age,1),
+        "research_priority":round(score,1),"contract_security":"NOT_VERIFIED",
+        "sellability":"NOT_VERIFIED","timeframes":{},"exit_watch":"INSUFFICIENT_DATA"}
+
+def momentum(closes):
+    if len(closes)<16 or any(v<=0 for v in closes): return {"status":"insufficient_data"}
+    def avglog(xs): return sum(math.log(xs[i]/xs[i-1]) for i in range(1,len(xs)))/(len(xs)-1)
+    recent=avglog(closes[-6:])
+    previous=avglog(closes[-11:-5])
+    trend=avglog(closes[-16:])
+    return {"status":"ok","recent":round(recent,6),"previous":round(previous,6),
+            "trend":round(trend,6),"decelerating":recent<previous,"uptrend":trend>0}
+
+def candles(payload):
+    rows=(((payload or {}).get("data") or {}).get("attributes") or {}).get("ohlcv_list") or []
+    return [float(r[4]) for r in sorted(rows,key=lambda x:x[0]) if len(r)>=5]
+
+def inspect(item):
+    pool=item.get("pool")
+    if not pool: return
+    network=GECKO_NETWORKS[item["network"]]
+    for period in ("day","week"):
+        url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/{period}?aggregate=1&limit=40&currency=usd"
+        try: item["timeframes"][period]=momentum(candles(fetch_json(url)))
+        except Exception as exc: item["timeframes"][period]={"status":"unavailable","reason":str(exc)[:100]}
+        time.sleep(0.4)
+    d=item["timeframes"].get("day",{})
+    w=item["timeframes"].get("week",{})
+    if d.get("status")!="ok" or w.get("status")!="ok": return
+    if d["decelerating"] and w["decelerating"]:
+        item["exit_watch"]="JOINT_MOMENTUM_DECELERATION_REVIEW_ONLY"
+    elif d["decelerating"] or w["decelerating"]:
+        item["exit_watch"]="MIXED_TIMEFRAMES_MONITOR"
+    else: item["exit_watch"]="NO_JOINT_DECELERATION"
+
+def report(items,scanned):
+    lines=[f"# Hamzeh DEX Radar — {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
+        "Research watchlist only. Not a buy/sell recommendation.",
+        "Contract security, honeypot risk and ability to exit have NOT been verified.",
+        f"Discovered tokens: {scanned}; candidates shown: {len(items)}",""]
+    if not items: lines.append("No candidates passed screening, or public sources were unavailable.")
+    for i,x in enumerate(items,1):
+        lines.extend([f"## {i}. {x['symbol']} — {x['network']}",
+            f"Research priority: {x['research_priority']}/100 (not a trading signal)",
+            f"Liquidity (reported): USD {x['liquidity_usd']:,.0f}",
+            f"24h volume (reported): USD {x['volume_24h_usd']:,.0f}",
+            f"Day/week momentum status: {x['exit_watch']}",
+            f"Contract: {x['contract']}",f"Market: {x.get('market_url') or 'unknown'}",""])
+    lines.append("A momentum slowdown does not establish a market top. Missing weekly data blocks exit conclusions.")
+    return "\n".join(lines)
+
+def notify(message):
+    token,chat=os.getenv("TELEGRAM_BOT_TOKEN"),os.getenv("TELEGRAM_CHAT_ID")
+    if not token or not chat: return False
+    data=urlencode({"chat_id":chat,"text":message[:3800]}).encode()
+    req=Request(f"https://api.telegram.org/bot{token}/sendMessage",data=data)
+    with urlopen(req,timeout=20) as response: return response.status==200
+
+def main():
+    output=Path("output"); output.mkdir(exist_ok=True)
+    found=discover()
+    candidates=[]
+    for token in found[:100]:
+        try:
+            item=screen(token)
+            if item: candidates.append(item)
+        except Exception as exc: print("Token unavailable:",token["chain"],str(exc)[:100])
+        time.sleep(0.2)
+    candidates.sort(key=lambda x:x["research_priority"],reverse=True)
+    selected=candidates[:8]
+    for item in selected: inspect(item)
+    data={"generated_at":datetime.now(timezone.utc).isoformat(),
+        "networks":list(NETWORKS),"discovered_count":len(found),"screened_count":len(candidates),
+        "candidates":selected}
+    (output/"radar.json").write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
+    result=report(selected,len(found))
+    (output/"report.md").write_text(result,encoding="utf-8")
+    print(result)
+    try: notify(result)
+    except Exception as exc: print("Telegram delivery failed:",str(exc)[:120])
+
+if __name__=="__main__": main()
