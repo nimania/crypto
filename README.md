@@ -1,43 +1,43 @@
-# Hamzeh DEX Radar
+# Hamzeh Crypto Radar — رادار کریپتوی حمزه
 
-A read-only cryptocurrency discovery and monitoring prototype for **Base, Arbitrum and Flare**. Designed around MetaMask-held assets and daily/weekly trend-following analysis.
+**مرجع پروژه:** [مستند جامع فارسی](docs/PROJECT_SPEC_FA.md) · [معماری و فرمول‌ها](docs/TECHNICAL.md) · [وضعیت اجرا، نقص‌ها و ادامه کار](docs/STATUS.md)
 
-**Current status: experimental research watchlist, not production trading advice.** Never sends transactions or connects wallet keys.
+**وب‌داشبورد:** https://nimania.github.io/crypto/  
+**مخزن:** https://github.com/nimania/crypto
 
-## Run locally
+## هدف تأییدشده
 
-Python 3.11+ (stdlib only):
+دستیار پژوهشی و تصمیم‌گیری حمزه اشرفی برای کشف خودکار فرصت‌های جدید و درحال‌رشد، ارزیابی ورود، پایش سبد و تشخیص کاهش شتاب روند برای بررسی خروج. تحلیل روزانه **و** هفتگی با هم، و اندازه‌گیری همبستگی هر کوین با بیت‌کوین مقدم بر ارزیابی موقعیت است. سامانه نباید سقف بازار یا سود را تضمین کند.
+
+- شبکه‌ها: **Base, Arbitrum, Flare, Ethereum, Solana**. BNB Chain به انتخاب کاربر خارج از محدوده است.
+- کیف‌پول اصلی: **MetaMask**؛ Uniswap یکی از پروتکل‌های قابل اتصال است، نه کیف‌پول اصلی.
+- دو سبک: معاملات روزانه و نگهداری بلندمدت؛ دو نوع فرصت: بسیار جدید و پروژه‌های در حال رشد.
+- خروج بر اساس افت مومنتوم/شیب، نه قیمت سود ثابت؛ فروش کامل یا پله‌ای هر دو قابل بررسی.
+- کانال اصلی: **همین وب‌سایت GitHub Pages**؛ **هیچ وابستگی به تلگرام وجود ندارد**.
+- هزینه بریج در مدل اصلی انتخاب فرصت اولویت ندارد، مطابق خواست صریح حمزه.
+- رمز، seed phrase یا کلید خصوصی وارد پروژه نمی‌شود؛ معاملات خودکار وجود ندارند.
+
+## وضعیت واقعی (نه آرزوهای محصول)
+
+**Experimental / read-only.** اسکن عمومی استخرها، فیلتر مقدماتی، همبستگی آماری BTC، بررسی محدود امنیت EVM، برآورد فرضی اثر قیمت و داشبورد وجود دارند. این موارد **هنوز جایگزین** امنیت قرارداد تأییدشده، sell simulation واقعی، quote اجرایی، پایش عملی سبد MetaMask، بک‌تست معتبر یا موتور پایدار ساختار هفتگی BTC نشده‌اند. پوشش هر پنج شبکه و محدودیت API باید مجدداً در اجرای واقعی تأیید شود. به [وضعیت و موارد باز](docs/STATUS.md) رجوع کنید.
+
+## اجرای محلی
+
+Python 3.11+؛ وابستگی خارجی پایتون در کد فعلی لازم نیست:
 
 ```bash
 python -m unittest discover -s tests -v
 python radar.py
 ```
 
-Results appear under `output/radar.json` and `output/report.md`. Data sourced from public DexScreener discovery feeds and GeckoTerminal pool OHLCV endpoints where available. No arbitrary invented OHLCV data. Discovery is **not comprehensive**: recent/promoted feeds are only a starting point and may be biased.
+خروجی‌ها: `output/radar.json` و `output/report.md`. صفحه `index.html` این JSON را از GitHub Pages می‌خواند.
 
-## GitHub Actions
+## استقرار
 
-The workflow scans every 6 hours and can be manually triggered. Reports are stored as a workflow artifact. To send to Telegram, add GitHub Actions secrets:
+`.github/workflows/radar.yml` اسکن و انتشار Pages را هر ۶ ساعت (UTC: دقیقه ۲۱) یا دستی اجرا می‌کند. GitHub → Settings → Pages → Source: **GitHub Actions**. دکمه «تازه‌سازی» وب‌سایت اسکن جدید آغاز نمی‌کند، فقط آخرین JSON منتشرشده را بازخوانی می‌کند.
 
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
+## هنگام ادامه پروژه
 
-Do not paste secrets into files, issues, or chats. Without these secrets, runs still create artifacts but send no messages.
+**اول** [PROJECT_SPEC_FA.md](docs/PROJECT_SPEC_FA.md) را به‌عنوان تصمیم‌های ثبت‌شده کاربر بخوانید، **دوم** [TECHNICAL.md](docs/TECHNICAL.md) را با کد واقعی تطبیق دهید، **سوم** [STATUS.md](docs/STATUS.md) را برای خطاها و کارهای باز بخوانید. هر تغییر معماری/نیاز باید هم‌زمان در مستندات ثبت شود.
 
-## Evaluation limits
-
-- DEX listing ≠ legitimate token; contract security and sellability are **not yet verified**.
-- Exit flags require **both** daily and weekly data. Missing/inadequate history leads to `INSUFFICIENT_DATA`.
-- Momentum deceleration may be transient and is **not proof of a top**.
-- The Flare GeckoTerminal network identifier and API coverage are provisional; failures must stay visible.
-- Ranking based on reported liquidity, 24h volume, and age is for research prioritization only, **not a buy signal**.
-- MetaMask is a wallet, not an exchange or a network; no wallet address is required for basic scans.
-- Geographic eligibility and protocol access must be verified independently; no measures to bypass KYC or sanctions restrictions.
-
-## Next milestones
-
-1. Independent contract-security and sellability checks; do not suggest trades before those checks.
-2. Read-only token inventories from public MetaMask wallet addresses on supported networks.
-3. Persist historical observations for realistic out-of-sample signal evaluation.
-4. Telegram-specific entry/exit watch alerts with deduplication and audit trail.
-5. Expand market discovery beyond promoted/recent tokens and improve network coverage.
+> **هشدار:** امتیاز فعلی فقط فعالیت استخر است، نه احتمال رشد یا توصیه خرید/فروش. کمبود داده، خطای API یا شبیه‌سازی ناقص نباید «امن» یا «فرصت وجود ندارد» گزارش شود.
