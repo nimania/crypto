@@ -22,10 +22,127 @@ async function load(){
   if(!Array.isArray(d.candidates)) throw Error('ساختار داده معتبر نیست');
   all=d.candidates;
   const btc=d.btc_market_structure||{};
+  const levels=d.btc_levels||{};
+  const statusText=x=>x==='confirmed_daily_acceptance'?'دو کندل بسته‌شده بیرون محدوده':x==='tested_not_confirmed'?'آزمون سطح؛ تأیید نشده':'شکست تأیید نشده';
   const piv=btc.derived_pivots||{};
   $('btc-support').textContent=typeof piv.support==='number'?'  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
   $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
+  const support=levels.support;const resistance=levels.resistance;
+  if(support)$('btc-support').textContent='health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(support.lower)+' – health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(support.upper)+' | '+statusText(levels.support_status);
+  if(resistance)$('btc-resistance').textContent='health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(resistance.lower)+' – health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(resistance.upper)+' | '+statusText(levels.resistance_status);
   const health=$('network-health');health.replaceChildren();
   for(const [chain,h] of Object.entries(d.network_health||{})){
    const item=document.createElement('div');item.className='network';
