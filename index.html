@@ -32,6 +32,10 @@ async function load(){
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+'؛ این تحلیل تضمین شکست روند نیست.':'داده قابل اتکای BTC در دسترس نیست.';
   $('btc-support').textContent=levels.support?'$'+money(levels.support.lower)+' تا $'+money(levels.support.upper)+' | '+evidence(levels.support_status)+weekly((levels.weekly_confirmation||{}).support):fmtLevel(piv.support);
   $('btc-resistance').textContent=levels.resistance?'$'+money(levels.resistance.lower)+' تا $'+money(levels.resistance.upper)+' | '+evidence(levels.resistance_status)+weekly((levels.weekly_confirmation||{}).resistance):fmtLevel(piv.resistance);
+  const reactionName={support_rebound:'حمایت در قیمت بسته‌شدن حفظ شده',resistance_rejection:'برگشت از مقاومت در قیمت بسته‌شدن',break_pending:'عبور اولیه؛ تأیید نشده',confirmed_daily_acceptance:'دو بسته‌شدن روزانه بیرون محدوده',retest_in_progress:'بازآزمایی در جریان',retest_failed:'بازگشت به سوی دیگر محدوده',no_decisive_reaction:'واکنش قاطع دیده نشده',insufficient_data:'داده کافی نیست',unavailable:'داده موجود نیست'};
+  const reactions=levels.reactions||{};
+  const reactionDetails=['support','resistance'].map(side=>reactionName[(reactions[side]||{}).status]||'نامشخص');
+  $('btc-note').textContent += ' | حمایت: '+reactionDetails[0]+' | مقاومت: '+reactionDetails[1]+'. این طبقه‌بندی فقط با قیمت‌های بسته‌شدن انجام شده است.';
   const health=$('network-health');health.replaceChildren();
   for(const [chain,h] of Object.entries(d.network_health||{})){
    const item=document.createElement('div');item.className='network';
