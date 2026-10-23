@@ -5,7 +5,7 @@
 <div class="networks" aria-label="شبکه‌های تحت پوشش"><span class="network"><strong>B</strong>Base</span><span class="network"><strong>A</strong>Arbitrum</span><span class="network"><strong>F</strong>Flare</span><span class="network"><strong>Ξ</strong>Ethereum</span><span class="network"><strong>S</strong>Solana</span></div>
 <div class="warning">نسخه آزمایشی: امتیاز فعالیت استخر فقط از حجم، نقدینگی گزارش‌شده و قدمت به دست می‌آید و به معنی امنیت یا سیگنال معاملاتی نیست. بررسی اولیه امنیت قرارداد برای بعضی شبکه‌ها اضافه شده، اما هیچ نتیجه‌ای تضمین امنیت نیست. اثرات قیمت فقط سناریوهای محاسباتی‌اند؛ قابلیت اجرای فروش هنوز بررسی نشده است.</div>
 <section class="section grid"><div class="card"><div class="label">استخرها / توکن‌های کشف‌شده</div><div class="number" id="found">—</div><div class="fine">در منابعی که اسکن شده‌اند</div></div><div class="card"><div class="label">موارد منتخب برای بررسی</div><div class="number" id="count">—</div><div class="fine">پس از غربالگری مقدماتی</div></div><div class="card"><div class="label">شبکه‌های هدف</div><div class="number">۵</div><div class="fine">سه EVM اصلی + اتریوم و سولانا</div></div><div class="card"><div class="label">زمان ثبت گزارش · UTC</div><div class="value" id="updated">—</div><div class="fine">تازه‌سازی صفحه، اسکن جدید اجرا نمی‌کند</div></div></section>
-<section class="section two"><div class="card" id="correlations"><div class="sectionhead"><h2>◉ پایش ساختار بیت‌کوین</h2><span class="tag" id="btc-state">در انتظار داده</span></div><div class="state" id="btc-close">داده ساختاری هنوز فعال نیست</div><p id="btc-note">سطوح تاریخی حمایت و مقاومت هنوز در ساختار امروز تأیید نشده‌اند؛ شکست قطعی اعلام نمی‌شود.</p><div class="rows"><div class="mini"><span class="label">حمایت هفتگی</span><b>در انتظار داده معتبر</b></div><div class="mini"><span class="label">مقاومت هفتگی</span><b>در انتظار داده معتبر</b></div></div></div><div class="card"><div class="sectionhead"><h2>↗ وضعیت رادار فرصت‌ها</h2><span class="tag" id="radar-health">در انتظار داده</span></div><div class="state" id="radar-summary">اسکن و نمایش داده‌ها</div><p id="radar-explain">هر فرصت باید همبستگی روزانه و هفتگی با BTC، نقدینگی و وضعیت شتاب روند را همراه خود داشته باشد.</p><div class="rows"><div class="mini"><span class="label">بازه کوتاه</span><b>۳۰ بازده روزانه</b></div><div class="mini"><span class="label">بازه بلند</span><b>تا ۲۶ بازده هفتگی</b></div></div></div></section>
+<section class="section two"><div class="card" id="correlations"><div class="sectionhead"><h2>◉ پایش ساختار بیت‌کوین</h2><span class="tag" id="btc-state">در انتظار داده</span></div><div class="state" id="btc-close">داده ساختاری هنوز فعال نیست</div><p id="btc-note">سطوح تاریخی حمایت و مقاومت هنوز در ساختار امروز تأیید نشده‌اند؛ شکست قطعی اعلام نمی‌شود.</p><div class="rows"><div class="mini"><span class="label">حمایت هفتگی</span><b id="btc-support">در انتظار داده معتبر</b></div><div class="mini"><span class="label">مقاومت هفتگی</span><b id="btc-resistance">در انتظار داده معتبر</b></div></div></div><div class="card"><div class="sectionhead"><h2>↗ وضعیت رادار فرصت‌ها</h2><span class="tag" id="radar-health">در انتظار داده</span></div><div class="state" id="radar-summary">اسکن و نمایش داده‌ها</div><p id="radar-explain">هر فرصت باید همبستگی روزانه و هفتگی با BTC، نقدینگی و وضعیت شتاب روند را همراه خود داشته باشد.</p><div class="rows"><div class="mini"><span class="label">بازه کوتاه</span><b>۳۰ بازده روزانه</b></div><div class="mini"><span class="label">بازه بلند</span><b>تا ۲۶ بازده هفتگی</b></div></div></div></section>
 <section class="section"><div class="card"><div class="sectionhead"><h2>سلامت داده‌ها به تفکیک شبکه</h2><span class="tag">تشخیص علت خالی‌بودن</span></div><div id="network-health" class="networks"></div></div></section><section class="section" id="opportunities"><div class="card tablecard"><div class="tabletop"><h2>فهرست فرصت‌های قابل بررسی</h2><div class="filters"><button class="filter active" data-network="all">همه</button><button class="filter" data-network="base">Base</button><button class="filter" data-network="arbitrum">Arbitrum</button><button class="filter" data-network="flare">Flare</button><button class="filter" data-network="ethereum">Ethereum</button><button class="filter" data-network="solana">Solana</button></div></div><div class="scroller"><table><thead><tr><th>توکن</th><th>شبکه</th><th>نقدینگی USD</th><th>حجم ۲۴ساعت</th><th>امتیاز فعالیت استخر</th><th>همبستگی روزانه BTC</th><th>همبستگی هفتگی BTC</th><th>شتاب / خروج</th><th>قرارداد</th><th>نقدشوندگی</th><th>اثر قیمت تخمینی</th><th>فروش</th><th>منبع</th></tr></thead><tbody id="rows"></tbody></table></div><div class="empty" id="empty" hidden><i>◇</i><b>هنوز نامزد قابل نمایش ثبت نشده</b><p>ممکن است منابع داده در دسترس نباشند، اسکن پوشش محدود داشته باشد یا هیچ استخر از فیلترها عبور نکرده باشد. این به معنی نبود فرصت در بازار نیست.</p></div><div style="padding:13px 19px" id="message" role="status" aria-live="polite"></div></div></section>
 <section class="section" id="roadmap"><div class="sectionhead"><h2>گام‌های بعدی رادار</h2><span class="tag">پیش‌نمایش طراحی</span></div><div class="coming"><div class="card"><h3>◈ پایش سبد MetaMask</h3><p>نمایش دارایی‌های آدرس عمومی کیف‌پول و بررسی قدرت روند هر موقعیت؛ بدون مجوز خرج‌کردن دارایی.</p></div><div class="card"><h3>◎ تشخیص خروج بر اساس شتاب</h3><p>ترکیب کندل روزانه و هفتگی برای تشخیص افت مومنتوم، بدون فرض وجود سقف قطعی.</p></div><div class="card"><h3>▤ دفترچه تغییرات بازار BTC</h3><p>ثبت پایدار سطوح حمایت و مقاومت تأییدشده، شکست‌ها و بازآزمایی‌ها.</p></div></div></section><footer>HAMZEH CRYPTO RADAR · داده‌ها از اسکن‌های عمومی تهیه می‌شوند. کاهش شتاب و همبستگی تاریخی تضمین‌کننده نتیجه آینده نیستند. نمایش کوین در این صفحه تأیید امنیت یا توصیه معاملاتی محسوب نمی‌شود.</footer></main></div>
 <script>
@@ -22,6 +22,73 @@ async function load(){
   if(!Array.isArray(d.candidates)) throw Error('ساختار داده معتبر نیست');
   all=d.candidates;
   const btc=d.btc_market_structure||{};
+  const piv=btc.derived_pivots||{};
+  $('btc-support').textContent=typeof piv.support==='number'?'
+  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
+  $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
+  $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
+  const health=$('network-health');health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(piv.support)+' (تخمینی)':'هنوز تعیین نشده';
+  $('btc-resistance').textContent=typeof piv.resistance==='number'?'
+  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
+  $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
+  $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
+  const health=$('network-health');health.replaceChildren();
+  for(const [chain,h] of Object.entries(d.network_health||{})){
+   const item=document.createElement('div');item.className='network';
+   const good=(h.successful_endpoints||0)>0;
+   const displayed=h.displayed_candidates||0;
+   const label=h.status==='source_unavailable'?'منبع در دسترس نیست':h.status==='no_eligible_pools_or_incomplete_coverage'?'نامزد پیدا نشد / پوشش ناقص':h.status==='partial_data'?'داده جزئی':h.status==='data_available'?'داده دریافت شد':'در فهرست نیست';
+   item.textContent=chain+' · '+label+' · '+displayed+' مورد · '+(h.successful_endpoints||0)+'/3 منبع';
+   item.setAttribute('aria-label',item.textContent);
+   item.title=(h.errors||[]).join(' | ')||'بدون خطای ثبت‌شده';
+   health.append(item);
+  }
+  $('found').textContent=money(d.discovered_count);
+  $('count').textContent=money(all.length);
+  $('updated').textContent=d.generated_at?new Date(d.generated_at).toISOString().replace('T',' ').slice(0,16):'نامشخص';
+  $('report-status').textContent='گزارش ذخیره‌شده';
+  $('radar-health').textContent=all.length?'داده دریافت شد':'فهرست خالی';
+  $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
+  $('radar-explain').textContent=all.length?'این فهرست پژوهشی است؛ وجود هشدار قرارداد حتی با امتیاز بالا اهمیت دارد.':'فهرست خالی است؛ وضعیت منابع و محدودیت API را در بخش سلامت داده ببینید.';
+  $('message').textContent='آخرین گزارش منتشرشده نمایش داده می‌شود؛ این دکمه اسکن جدید اجرا نمی‌کند.';
+  render();
+ } catch(e) {
+  $('report-status').textContent='داده در دسترس نیست';
+  $('message').textContent='بارگذاری گزارش ناموفق بود: '+e.message;
+  all=[];render();
+ }
+}
+$('refresh').onclick=load;
+load();
+</script></body></html>+money(piv.resistance)+' (تخمینی)':'هنوز تعیین نشده';
   $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
   $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
