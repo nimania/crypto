@@ -61,3 +61,8 @@
 4. For each new change record: motivation, affected file paths, old/new API and schema, tests, last run ID, known limitations.
 5. Update all three docs and README after any material product requirement or architecture change.
 6. Never ask for MetaMask seed/private keys; use public addresses only with permission. No trades executed automatically.
+
+## 2026-10-23 Flare connector fix
+- Latest inspected Action run `39959943567` had three 404 errors for Flare endpoints.
+- The GeckoTerminal identifier in `radar.py` was corrected from `flare-network` to `flare` (verified on GeckoTerminal's Flare pools page). Commit `8bb23b3`.
+- **Pending:** a fresh Action run to verify the API response, pool counts and Pages deployment; code change alone does not prove live recovery.
