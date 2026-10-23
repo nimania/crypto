@@ -36,6 +36,10 @@ jobs:
           assert html.count("</html>") == 1
           assert html.strip().endswith("</script></body></html>")
           assert "async function load()" in html
+          coin = Path("coin.html").read_text(encoding="utf-8")
+          assert coin.count("<script>") == coin.count("</script>") == 1
+          assert coin.count("</html>") == 1
+          assert coin.strip().endswith("</script></body></html>")
           print("Dashboard HTML structure OK")
           PY
       - name: Restore BTC monitoring state
@@ -56,6 +60,7 @@ jobs:
       - name: Build site
         run: |
           cp index.html output/index.html
+          cp coin.html output/coin.html
           touch output/.nojekyll
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
