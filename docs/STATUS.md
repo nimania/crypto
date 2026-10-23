@@ -85,3 +85,9 @@
 - Dashboard distinguishes partial data, source unavailable, and candidates awaiting deep analysis.
 - Known limitations: sampled discovery is not exhaustive. Provider outage or missing selected pools does not prove absence of opportunities. Overlap and duplicates between sources remain possible.
 - **Unverified until next GitHub Action run:** live performance on all chains and page rendering.
+
+## 2026-10-23 — BTC pivot preview
+- Added btc_pivots.py to derive candidate weekly close pivot values from historical candles.
+- Included the preliminary derived_pivots field in radar.json and showed tentative values in the dashboard.
+- These values are not validated support/resistance zones, and there is no confirmed breakout logic or persistent market state yet.
+- Pending: real-data validation, comprehensive tests and verification of GitHub Pages after deployment.
