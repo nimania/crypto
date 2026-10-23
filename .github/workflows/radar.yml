@@ -38,8 +38,21 @@ jobs:
           assert "async function load()" in html
           print("Dashboard HTML structure OK")
           PY
+      - name: Restore BTC monitoring state
+        uses: actions/cache/restore@v4
+        with:
+          path: state/btc_levels.json
+          key: btc-levels-${{ github.run_id }}
+          restore-keys: |
+            btc-levels-
       - name: Scan markets
         run: python radar.py
+      - name: Save BTC monitoring state
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: state/btc_levels.json
+          key: btc-levels-${{ github.run_id }}
       - name: Build site
         run: |
           cp index.html output/index.html
