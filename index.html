@@ -23,8 +23,7 @@ async function load(){
   all=d.candidates;
   const btc=d.btc_market_structure||{};
   const piv=btc.derived_pivots||{};
-  $('btc-support').textContent=typeof piv.support==='number'?'
-  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
+  $('btc-support').textContent=typeof piv.support==='number'?'  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
   $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
   const health=$('network-health');health.replaceChildren();
@@ -56,8 +55,7 @@ async function load(){
 $('refresh').onclick=load;
 load();
 </script></body></html>+money(piv.support)+' (تخمینی)':'هنوز تعیین نشده';
-  $('btc-resistance').textContent=typeof piv.resistance==='number'?'
-  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
+  $('btc-resistance').textContent=typeof piv.resistance==='number'?'  $('btc-state').textContent=btc.status==='observed'?'کندل‌های بسته‌شده':'داده ناکافی';
   $('btc-close').textContent=btc.latest_close_usd?'آخرین بسته‌شدن روزانه BTC: $'+money(btc.latest_close_usd):'قیمت بسته‌شدن تأیید نشده';
   $('btc-note').textContent=btc.latest_close_utc?'زمان بسته‌شدن: '+btc.latest_close_utc+' · سطوح قبلی تاریخی‌اند و برای شکست معتبر کالیبره نشده‌اند.':'قیمت یا کندل کافی در دسترس نیست؛ شکست تأییدشده‌ای اعلام نمی‌شود.';
   const health=$('network-health');health.replaceChildren();
