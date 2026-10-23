@@ -105,3 +105,9 @@
 - `radar.py` reads `state/btc_levels.json` (with last published JSON as fallback), persists the updated state locally and `radar.yml` restores/saves it using unique GitHub Actions cache keys with prefix restore. The cache is **not permanent or an authoritative financial ledger**, may expire/be evicted, and restoration ordering must be assessed after real runs.
 - Added a test for unavailable weekly confirmation; full multiweek regression, weekly break persistence, and historical backtesting remain pending.
 - **Deployment and actual live data still require checking the newest GitHub Actions run.** Do not claim verified weekly breakouts on current data until validated.
+
+## 2026-10-23 — BTC reaction classification
+- Added `btc_reactions.py` with conservative close-based labels: support rebound, resistance rejection, unconfirmed boundary crossing, two-close daily acceptance, provisional retest and reclaim.
+- Integrated `reactions` into `btc_levels` output and a concise Persian explanation in the dashboard; added `tests/test_btc_reactions.py` with synthetic scenarios.
+- Limitations: input is daily **close only**; it cannot observe intraday contact/wicks, exact stop runs, volume, or whether a level historically held. Retests need better state transitions and backtesting. These labels are *descriptive*, not executable buy/sell signals.
+- Confirm deployment and all tests on an Action run after these commits. Do not claim live production validation solely because code exists.
