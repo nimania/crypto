@@ -111,3 +111,10 @@
 - Integrated `reactions` into `btc_levels` output and a concise Persian explanation in the dashboard; added `tests/test_btc_reactions.py` with synthetic scenarios.
 - Limitations: input is daily **close only**; it cannot observe intraday contact/wicks, exact stop runs, volume, or whether a level historically held. Retests need better state transitions and backtesting. These labels are *descriptive*, not executable buy/sell signals.
 - Confirm deployment and all tests on an Action run after these commits. Do not claim live production validation solely because code exists.
+
+## 2026-10-23 — BTC relative strength and historical replay diagnostics
+- Added relative_strength.py: compare token USD performance against BTC over aligned completed UTC 7/30/90-day periods; missing data results are explicitly marked insufficient.
+- For eight deep-analysis candidates only, radar.py reports relative_strength. The dashboard shows the 30-day percentage-point excess return versus BTC; this is not the same as return ratio, correlation or a buy signal.
+- Added btc_replay.py and historical_replay diagnostics to btc_levels: sequential retrospective classification using only earlier completed candle closes. This is descriptive in-sample replay with a fixed current zone, not a predictive backtest or an estimate of future profitability. True level discovery/retest accuracy still requires walk-forward out-of-sample validation.
+- Added tests/test_relative_strength.py with positive, missing-history and incomplete-candle scenarios.
+- Live Actions run and Pages deployment verification is pending; code committed does not establish live data validity.
