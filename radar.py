@@ -2,6 +2,7 @@
 import json, os, time, math
 from correlation import measure
 from relative_strength import relative_strength
+from btc_replay import replay_reactions
 from btc_structure import analyze_btc
 from btc_pivots import levels_from_completed_closes
 from btc_levels import monitor
@@ -256,6 +257,10 @@ def main():
             print("Previous BTC state unavailable:",str(exc)[:150])
     btc_levels=monitor(btc_rows,btc_market_structure['derived_pivots'],previous_levels)
     btc_levels["history_source"]="persisted_state_or_last_published_json" if previous_levels else "bootstrap_no_previous_state"
+    btc_levels["historical_replay"]={}
+    for side in ("support","resistance"):
+        zone=btc_levels.get(side)
+        btc_levels["historical_replay"][side]=replay_reactions(btc_rows,zone,side) if zone else {"status":"unavailable","reason":"no_zone"}
     state_path.parent.mkdir(parents=True,exist_ok=True)
     state_path.write_text(json.dumps(btc_levels,ensure_ascii=False,indent=2),encoding="utf-8")
     for item in selected:
