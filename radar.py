@@ -66,6 +66,48 @@ def candles(payload):
     rows=(((payload or {}).get("data") or {}).get("attributes") or {}).get("ohlcv_list") or []
     return [float(r[4]) for r in sorted(rows,key=lambda x:x[0]) if len(r)>=5]
 
+def discover_gecko():
+    """Independent pool discovery: new, trending and top pools per chain."""
+    candidates={}
+    errors=[]
+    for chain,network in GECKO_NETWORKS.items():
+        for endpoint in ("trending_pools","new_pools","pools"):
+            try:
+                payload=fetch_json(f"{GECKO}/networks/{network}/{endpoint}?include=base_token&page=1")
+                included={x.get("id"):x for x in payload.get("included",[])}
+                for record in payload.get("data",[]):
+                    a=record.get("attributes") or {}
+                    address=a.get("address")
+                    rel=(record.get("relationships") or {}).get("base_token",{}).get("data") or {}
+                    token=included.get(rel.get("id"),{})
+                    ta=token.get("attributes") or {}
+                    token_addr=ta.get("address")
+                    if not address or not token_addr:continue
+                    liquidity=float(a.get("reserve_in_usd") or 0)
+                    vols=a.get("volume_usd") or {}
+                    volume=float(vols.get("h24") or 0)
+                    created=a.get("pool_created_at") or ""
+                    try:
+                        dt=datetime.fromisoformat(created.replace("Z","+00:00"))
+                        age=max(0,(datetime.now(timezone.utc)-dt).total_seconds()/86400)
+                    except (ValueError,TypeError): age=None
+                    if liquidity<20000 or volume<10000 or age is None or age<1:continue
+                    score=40*min(liquidity/250000,1)+35*min(volume/100000,1)+25*min(age/30,1)
+                    entry={"network":chain,"symbol":ta.get("symbol") or a.get("name") or "?",
+                        "contract":token_addr,"pool":address,"dex":"GeckoTerminal",
+                        "market_url":f"https://www.geckoterminal.com/{network}/pools/{address}",
+                        "liquidity_usd":liquidity,"volume_24h_usd":volume,"age_days":round(age,1),
+                        "research_priority":round(score,1),"contract_security":"NOT_VERIFIED",
+                        "sellability":"NOT_VERIFIED","timeframes":{},"exit_watch":"INSUFFICIENT_DATA",
+                        "discovery_source":endpoint}
+                    key=(chain,address.lower())
+                    if key not in candidates or candidates[key]["research_priority"]<entry["research_priority"]:
+                        candidates[key]=entry
+            except Exception as exc:
+                errors.append(f"{chain}/{endpoint}: {str(exc)[:110]}")
+            time.sleep(1.25)
+    return list(candidates.values()),errors
+
 def btc_daily_rows():
     """Public Coinbase BTC-USD completed daily candles for a comparable benchmark."""
     from datetime import timedelta
@@ -133,7 +175,7 @@ def notify(message):
 def main():
     output=Path("output"); output.mkdir(exist_ok=True)
     found=discover()
-    candidates=[]
+    candidates,source_errors=discover_gecko()
     for token in found[:100]:
         try:
             item=screen(token)
@@ -148,12 +190,14 @@ def main():
         print("BTC reference market data unavailable:",str(exc)[:160])
     for item in selected: inspect(item,btc_rows)
     data={"generated_at":datetime.now(timezone.utc).isoformat(),
-        "networks":list(NETWORKS),"discovered_count":len(found),"screened_count":len(candidates),
+        "networks":list(NETWORKS),"discovered_count":len(found)+len(candidates),"screened_count":len(candidates),
+        "data_source_errors":source_errors,
         "candidates":selected}
     (output/"radar.json").write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
     result=report(selected,len(found))
     (output/"report.md").write_text(result,encoding="utf-8")
     print(result)
+    for err in source_errors: print("Source warning:",err)
     # Web dashboard is the only reporting channel; no Telegram notifications.
 
 if __name__=="__main__": main()
