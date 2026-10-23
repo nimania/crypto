@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>پرونده کوین | رادار حمزه</title>
+<style>
+:root{color-scheme:dark;font-family:Tahoma,Arial,sans-serif;background:#0a1120;color:#edf4ff}*{box-sizing:border-box}body{margin:0;background:#0a1120}main{max-width:1100px;margin:auto;padding:25px 18px 65px}a{color:#75e1d2}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.eyebrow{color:#73e0ce;letter-spacing:1.6px;font-size:12px}.card{border:1px solid #30435c;background:#142238;border-radius:16px;padding:20px;min-width:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}.wide{grid-column:1/-1}h1{font-size:32px;margin:10px 0}h2{font-size:17px;margin:0 0 14px}p{color:#b0c4d9;line-height:1.9}.k{color:#9aafc6;font-size:12px}.v{font-size:18px;margin-top:9px;overflow-wrap:anywhere}.item{padding:10px 0;border-bottom:1px solid #2c4056}.item:last-child{border-bottom:0}.alert{border:1px solid #8b6540;color:#f7d5a1;background:#32271e;padding:14px;border-radius:12px;margin:20px 0;line-height:1.8}.fine{font-size:12px;color:#91a9c2;line-height:1.8}.mono{direction:ltr;unicode-bidi:plaintext;font-family:monospace;overflow-wrap:anywhere}button{padding:11px;border:1px solid #477469;background:#1b4e4c;color:#e9fffb;border-radius:10px;cursor:pointer}@media(max-width:700px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style></head>
+<body><main>
+<header><a href="./">← بازگشت به رادار</a><span class="eyebrow">HAMZEH CRYPTO RADAR / TOKEN PROFILE</span></header>
+<h1 id="name">پرونده کوین</h1><p id="subtitle">در حال دریافت آخرین گزارش منتشرشده...</p>
+<div class="alert">این پرونده گزارش پژوهشی است؛ امنیت قرارداد، اجرای فروش و سودآوری تأیید یا تضمین نمی‌شوند. فقط اطلاعات ثبت‌شده در آخرین اسکن نمایش داده می‌شود.</div>
+<div id="state" role="status"></div>
+<div class="grid" id="profile" hidden>
+<section class="card"><h2>هویت و بازار</h2><div id="identity"></div></section>
+<section class="card"><h2>نقدینگی و هزینه خروج</h2><div id="liquidity"></div></section>
+<section class="card"><h2>ارتباط با بیت‌کوین</h2><div id="btc"></div></section>
+<section class="card"><h2>روند و نشانه‌های خروج</h2><div id="trend"></div></section>
+<section class="card"><h2>امنیت قرارداد</h2><div id="security"></div></section>
+<section class="card"><h2>اعتبار داده‌ها و وضعیت بررسی</h2><div id="quality"></div></section>
+</div><p class="fine">آدرس قرارداد همراه با شبکه، شناسه دارایی است؛ نمادهای مشابه ممکن است قراردادهای متفاوتی داشته باشند. داده‌ها از گزارش ساعتی منتشرشده خوانده می‌شوند، نه مستقیماً از کیف‌پول.</p>
+</main>
+<script>
+const el=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const chain=params.get('network'),contract=params.get('contract');
+const fmt=n=>Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+function field(parent,title,value){
+ const wrap=document.createElement('div');wrap.className='item';
+ const a=document.createElement('div');a.className='k';a.textContent=title;
+ const b=document.createElement('div');b.className='v';b.textContent=value??'داده کافی نیست';
+ wrap.append(a,b);parent.append(wrap);
+}
+function textLink(parent,title,url){
+ const div=document.createElement('div');div.className='item';
+ const a=document.createElement('a');a.href=url;a.textContent=title;a.target='_blank';a.rel='noopener noreferrer';div.append(a);parent.append(div);
+}
+function percent(n){return Number.isFinite(Number(n))?fmt(n)+'٪':'داده کافی نیست'}
+function corr(x){return x&&x.status==='ok'?String(x.coefficient)+' (از '+x.observations+' مشاهده)':'داده کافی نیست'}
+function trend(x){if(!x||x.status!=='ok')return 'داده کافی نیست';return (x.uptrend?'روند رو به بالا':'روند غیرصعودی')+'؛ '+(x.decelerating?'کاهش شتاب مشاهده شده':'کاهش شتاب ثبت نشده')}
+async function load(){
+ if(!chain||!contract){el('state').textContent='شبکه یا شناسه قرارداد در نشانی مشخص نشده است.';return}
+ try{
+  const response=await fetch('./radar.json?t='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const d=await response.json();
+  const x=(d.candidates||[]).find(v=>v.network===chain&&(chain==='solana'?v.contract===contract:String(v.contract).toLowerCase()===contract.toLowerCase()));
+  if(!x){el('state').textContent='این دارایی در فهرست آخرین گزارش وجود ندارد. ممکن است از فهرست محدود فعلی خارج شده باشد.';return}
+  el('state').textContent='آخرین گزارش: '+(d.generated_at||'نامشخص');
+  el('name').textContent=(x.symbol||'توکن')+' — '+x.network;
+  el('subtitle').textContent='پرونده مبتنی بر شناسه قرارداد، نه فقط نماد توکن';
+  el('profile').hidden=false;
+  const identity=el('identity');field(identity,'شبکه',x.network);field(identity,'نماد',x.symbol);field(identity,'قرارداد',x.contract);field(identity,'شناسه استخر',x.pool);field(identity,'امتیاز فعالیت استخر (نه احتمال سود)',x.research_priority===undefined?'نامشخص':String(x.research_priority)+' از ۱۰۰');
+  if(typeof x.market_url==='string'&&x.market_url.startsWith('https://'))textLink(identity,'مشاهده استخر و منبع',x.market_url);
+  const liq=el('liquidity');field(liq,'نقدینگی گزارش‌شده',x.liquidity_usd==null?'داده کافی نیست':'$'+fmt(x.liquidity_usd));field(liq,'حجم ۲۴ ساعت',x.volume_24h_usd==null?'داده کافی نیست':'$'+fmt(x.volume_24h_usd));field(liq,'تأیید نقدشوندگی واقعی',(x.liquidity_review||{}).status==='reported_not_verified'?'فقط عدد گزارش‌شده؛ عمق اجرای سفارش تأیید نشده':'داده کافی نیست');const scenarios=x.sell_impact_scenarios||[];for(const z of scenarios)field(liq,'اثر فرضی فروش '+(z.trade_usd||'?')+' دلار',z.status==='hypothetical_model_only'?percent(z.estimated_price_impact_pct)+' — مدل فرضی، نه قیمت اجرایی':'بررسی نشده');
+  field(liq,'قابلیت فروش','تراکنش فروش شبیه‌سازی نشده');
+  const btc=el('btc');const rel=x.btc_relationship||{};field(btc,'همبستگی روزانه BTC',corr(rel.daily_30));field(btc,'همبستگی هفتگی BTC',corr(rel.weekly_26));const rs=(x.relative_strength||{}).periods||{};for(const period of ['7d','30d','90d']){const v=rs[period];field(btc,'عملکرد نسبی '+period+' نسبت به BTC',v&&v.status==='ok'?percent(v.relative_return_pct)+' واحد درصد تفاوت بازده':'داده کافی نیست')}
+  const tr=el('trend');field(tr,'وضعیت ارزیابی خروج',x.exit_watch||'داده کافی نیست');field(tr,'روند روزانه',trend((x.timeframes||{}).day));field(tr,'روند هفتگی',trend((x.timeframes||{}).week));field(tr,'تفسیر','کاهش شتاب به‌تنهایی ثابت نمی‌کند سقف قیمت تشکیل شده است');
+  const sec=el('security');const risk=x.security_review||{};field(sec,'نتیجه بررسی',risk.status||'بررسی نشده');field(sec,'محدوده پوشش',risk.provider||'پوشش تأیید نشده');field(sec,'پرچم‌های ریسک',(risk.red_flags||[]).length?risk.red_flags.join('، '):risk.status==='no_flags_in_checked_fields'?'در فیلدهای محدود بررسی‌شده هشدار ثبت نشده؛ تضمین امنیت نیست':'امنیت تأیید نشده');field(sec,'آزمون فروش',risk.simulation_performed?'نتیجه بررسی باید مستقل تأیید شود':'انجام نشده');
+  const qual=el('quality');field(qual,'سطح بررسی',x.detail_status==='deep_analysis_selected'?'انتخاب‌شده برای تحلیل عمیق اولیه':'تحلیل تکمیلی هنوز انجام نشده');field(qual,'تاریخ گزارش',d.generated_at||'نامشخص');field(qual,'محدودیت','نتایج API ممکن است ناقص یا تأخیردار باشند؛ این پرونده سیگنال معاملاتی نیست');
+ }catch(e){el('state').textContent='دریافت داده ناموفق بود: '+e.message}
+}
+load();
+</script></body></html>
