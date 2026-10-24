@@ -140,3 +140,11 @@
 - Output `web_attention` includes explicit `sampled`, `unavailable`, `ambiguous_identity`, or `not_sampled_this_run` statuses. News may be empty due to narrow queries or GDELT availability. No cross-run history or trending score exists yet.
 - Dashboard lists the sampled 24-hour article count; individual coin profiles show source URLs and dates as provided. Unit tests cover conservative missing-data semantics.
 - **Not yet verified in live Actions/Pages.** Next: validate GDELT response and limits, benchmark runtime; persist and deduplicate across days, expand coverage with proper caching and provider rate limits; implement licensed social APIs and bot-resistant engagement scoring.
+
+## 2026-10-24 — technical-first hourly event gate (partial implementation)
+- Added `hourly_technical.py`: reads only OHLCV candles whose UTC start plus one hour is no later than scan time; needs >=20 closed bars. Signals provisional 19-bar high/low crossing **only** when the preceding close was not already beyond that same boundary. This is a research event, not a validated trade breakout.
+- Existing deep-analysis `inspect()` now fetches `ohlcv/hour`, computes a technical event, and logs last closed hourly candle; daily/weekly logic remains.
+- GDELT lookup is conditional on an hourly technical event for at most 4 deeply analyzed candidates per run; others show `not_triggered`. Security and roadmap checks are independent and are not replaced by this gate.
+- Profile displays hourly event/trigger metadata; tests cover exclusion of forming bars, threshold and insufficient data.
+- **Critical limitations:** Only 8 candidates have detailed hour-candle inspection; the scheduled scan currently runs at minute 21 hourly and may take >10 min. Therefore this is NOT a guaranteed sub-hour monitoring/alert system, and detection on every listed token is NOT implemented. No deduplication of event alerts across scans, automatic roadmap ingestion, or live integration validation yet.
+- Next: independent lightweight ~15-minute watchlist candle monitor, durable per-coin last-closed timestamp/event key, rate-limited breadth across all networks, priority event queue, webhook/notification, provider candle timestamps and CI verification.
