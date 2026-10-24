@@ -125,3 +125,11 @@
 - Sections: identity, pool liquidity and synthetic impact, daily/weekly BTC correlation, relative strength at 7/30/90d, momentum, risk flags, data coverage and timestamps.
 - The profile is not a historic permanent page: if a token falls outside the latest sampled watchlist, it is unavailable. No fake security, sellability or signal status is produced.
 - **Awaiting verification:** new Action run, deployment, and browser-level interaction after publishing.
+
+## 2026-10-24 — social and tokenomics discovery (partial)
+- Expanded per-network sampled watchlist from 10 to 30 candidates; discovery source pagination and scan budget still limit coverage. No promise of exhaustive enumeration.
+- `radar.py` adds `social_monitor` with official/profile-linked URLs from DexScreener, but **does not yet measure organic mentions, engagement, or trending**. A social link or promoted profile is not a social activity metric.
+- `token_supply` reads reported total and circulating supply from GeckoTerminal token info for at most 12 watchlist entries per run to limit API load. `unreleased_supply` is the reported difference, not proof of locked supply or creator ownership. API fields and units must be validated live.
+- Creator-held amount/percentage remain null until reliable creator/team wallet attribution and vesting/supply accounting are implemented. Never display null as zero.
+- UI adds social references and supply columns. No independent test run or deployed-site verification completed yet.
+- Next: build verifiable organic social mention/engagement historical tracking by platform (with anti-bot filtering), token holder attribution and vesting, cache and rate budgets, continuous trend persistence, and integration tests.
