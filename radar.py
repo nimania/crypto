@@ -200,6 +200,48 @@ def notify(message):
     req=Request(f"https://api.telegram.org/bot{token}/sendMessage",data=data)
     with urlopen(req,timeout=20) as response: return response.status==200
 
+def enrich_metadata(items):
+    """Metadata is not evidence of organic social popularity or creator ownership."""
+    try:
+        profiles=fetch_json(DEX+"/token-profiles/latest/v1")
+    except Exception:
+        profiles=[]
+    lookup={}
+    for row in profiles if isinstance(profiles,list) else []:
+        chain=str(row.get("chainId","")).lower().replace("eth","ethereum") if row.get("chainId")=="eth" else str(row.get("chainId","")).lower()
+        address=str(row.get("tokenAddress") or "")
+        if address: lookup[(chain,address if chain=="solana" else address.lower())]=row
+    for item in items:
+        chain=item["network"]
+        address=item["contract"]
+        profile=lookup.get((chain,address if chain=="solana" else address.lower()),{})
+        links=[]
+        for link in profile.get("links") or []:
+            if isinstance(link,dict) and str(link.get("url","")).startswith("https://"):
+                links.append({"platform":str(link.get("type") or link.get("label") or "web"),"url":link["url"]})
+        item["social_monitor"]={"links":links[:15],"organic_mentions_24h":None,
+            "engagement_24h":None,"trending":"unverified",
+            "status":"links_only" if links else "unavailable"}
+        supply={"total_supply":None,"circulating_supply":None,"unreleased_supply":None,
+                "creator_held":None,"creator_held_pct":None,"status":"unavailable"}
+        try:
+            url=GECKO+"/networks/"+GECKO_NETWORKS[chain]+"/tokens/"+quote(address,safe="")+"/info"
+            attrs=((fetch_json(url).get("data") or {}).get("attributes") or {})
+            for key in ("total_supply","circulating_supply"):
+                try:
+                    value=float(attrs[key])
+                    if math.isfinite(value) and value>=0:supply[key]=value
+                except (KeyError,TypeError,ValueError):pass
+            total,circ=supply["total_supply"],supply["circulating_supply"]
+            if total is not None and circ is not None and circ<=total:
+                supply["unreleased_supply"]=total-circ
+                supply["status"]="provider_reported"
+            elif total is not None or circ is not None:
+                supply["status"]="partial"
+        except Exception as exc:
+            supply["error"]=str(exc)[:100]
+        item["token_supply"]=supply
+
 def main():
     output=Path("output"); output.mkdir(exist_ok=True)
     found=discover()
@@ -215,7 +257,7 @@ def main():
     for item in sorted(candidates,key=lambda x:x["research_priority"],reverse=True):
         by_network[item["network"]].append(item)
     # Network-specific watchlists must not be hidden by the global eight-item analysis budget.
-    per_network={network:items[:10] for network,items in by_network.items()}
+    per_network={network:items[:30] for network,items in by_network.items()}
     selected=[]
     while len(selected)<8 and any(by_network.values()):
         for network in NETWORKS:
@@ -270,6 +312,7 @@ def main():
         item['sell_impact_scenarios']=[indicative_sell_impact(item,trade_usd=n) for n in (500,1000,5000)]
         item['sellability']='NOT_SIMULATED'
         time.sleep(0.3)
+    enrich_metadata(watchlist)
     for item in candidates:
         source_health[item["network"]].setdefault("screened_candidates",0)
         source_health[item["network"]]["screened_candidates"]+=1
