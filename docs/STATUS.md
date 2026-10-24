@@ -133,3 +133,10 @@
 - Creator-held amount/percentage remain null until reliable creator/team wallet attribution and vesting/supply accounting are implemented. Never display null as zero.
 - UI adds social references and supply columns. No independent test run or deployed-site verification completed yet.
 - Next: build verifiable organic social mention/engagement historical tracking by platform (with anti-bot filtering), token holder attribution and vesting, cache and rate budgets, continuous trend persistence, and integration tests.
+
+## 2026-10-24 — experimental Web Attention phase 1
+- Added `web_attention.py` with GDELT DOC 2.0 article-list sampling for at most five candidate contracts per run; the scan is **not** exhaustive, and an observed sample count is **not** a total online mention count.
+- Queries combine token ticker, cryptocurrency, and chain. Short/ambiguous tickers are excluded rather than misattributing unrelated news. Further entity verification by official project identity remains outstanding.
+- Output `web_attention` includes explicit `sampled`, `unavailable`, `ambiguous_identity`, or `not_sampled_this_run` statuses. News may be empty due to narrow queries or GDELT availability. No cross-run history or trending score exists yet.
+- Dashboard lists the sampled 24-hour article count; individual coin profiles show source URLs and dates as provided. Unit tests cover conservative missing-data semantics.
+- **Not yet verified in live Actions/Pages.** Next: validate GDELT response and limits, benchmark runtime; persist and deduplicate across days, expand coverage with proper caching and provider rate limits; implement licensed social APIs and bot-resistant engagement scoring.
