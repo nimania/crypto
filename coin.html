@@ -45,6 +45,15 @@ async function load(){
   const d=await response.json();
   const x=(d.candidates||[]).find(v=>v.network===chain&&(chain==='solana'?v.contract===contract:String(v.contract).toLowerCase()===contract.toLowerCase()));
   if(!x){el('state').textContent='این دارایی در فهرست آخرین گزارش وجود ندارد. ممکن است از فهرست محدود فعلی خارج شده باشد.';return}
+  try{
+    const live=await fetch('https://raw.githubusercontent.com/nimania/crypto/hourly-data/hourly.json?t='+Date.now(),{cache:'no-store'});
+    if(live.ok){
+      const feed=await live.json();
+      const identity=x.network+':'+(x.network==='solana'?x.contract:String(x.contract).toLowerCase());
+      const update=(feed.tokens||{})[identity];
+      if(update){x.hourly_technical=update;if(update.last_news)x.web_attention=update.last_news;}
+    }
+  }catch(error){/* leave published hourly snapshot intact */}
   el('state').textContent='آخرین گزارش: '+(d.generated_at||'نامشخص');
   el('name').textContent=(x.symbol||'توکن')+' — '+x.network;
   el('subtitle').textContent='پرونده مبتنی بر شناسه قرارداد، نه فقط نماد توکن';
