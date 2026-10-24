@@ -2,7 +2,8 @@
 import json, os, time, math
 from correlation import measure
 from relative_strength import relative_strength
-from web_attention import enrich_news
+from web_attention import collect as collect_news
+from hourly_technical import closed_prices, assess
 from btc_replay import replay_reactions
 from btc_structure import analyze_btc
 from btc_pivots import levels_from_completed_closes
@@ -164,6 +165,11 @@ def inspect(item,btc_rows=None):
             item["relative_strength"]=relative_strength(token_rows,btc_rows)
         except Exception as exc: item["btc_relationship"]={"status":"unavailable","reason":str(exc)[:100]}
     network=GECKO_NETWORKS[item["network"]]
+    hourly_url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/hour?aggregate=1&limit=50&currency=usd"
+    try:
+        item["hourly_technical"]=assess(closed_prices(fetch_json(hourly_url)))
+    except Exception as exc:
+        item["hourly_technical"]={"status":"unavailable","news_trigger":False,"signal":"NO_CONFIRMED_TECHNICAL_EVENT","reason":str(exc)[:110]}
     for period in ("day","week"):
         url=f"{GECKO}/networks/{network}/pools/{quote(pool,safe='')}/ohlcv/{period}?aggregate=1&limit=40&currency=usd"
         try: item["timeframes"][period]=momentum(candles(fetch_json(url)))
@@ -341,8 +347,14 @@ def main():
         item['sellability']='NOT_SIMULATED'
         time.sleep(0.3)
     enrich_metadata(watchlist)
-    news_queries=enrich_news(watchlist,limit=5)
-    print('Web news samples queried:',news_queries)
+    news_queries=0
+    for item in watchlist:
+        item["web_attention"]={"status":"not_triggered","sample_count_24h":None,"articles":[],"trend_status":"not_established"}
+    for item in selected:
+        if (item.get("hourly_technical") or {}).get("news_trigger") and news_queries<4:
+            item["web_attention"]=collect_news(item)
+            news_queries+=1
+    print("Hourly-technical-triggered news queries:",news_queries)
     for item in candidates:
         source_health[item["network"]].setdefault("screened_candidates",0)
         source_health[item["network"]]["screened_candidates"]+=1
