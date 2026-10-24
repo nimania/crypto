@@ -211,14 +211,37 @@ def enrich_metadata(items):
         chain=str(row.get("chainId","")).lower().replace("eth","ethereum") if row.get("chainId")=="eth" else str(row.get("chainId","")).lower()
         address=str(row.get("tokenAddress") or "")
         if address: lookup[(chain,address if chain=="solana" else address.lower())]=row
+    # Query actual watched contracts in batches rather than the small global latest-profile feed.
+    # DexScreener allows up to 30 addresses per token batch request.
+    pair_links={}
+    for chain in NETWORKS:
+        addresses=list(dict.fromkeys(x["contract"] for x in items if x["network"]==chain))
+        for start in range(0,len(addresses),30):
+            batch=addresses[start:start+30]
+            try:
+                payload=fetch_json(DEX+"/tokens/v1/"+("ethereum" if chain=="ethereum" else chain)+"/"+",".join(quote(a,safe="") for a in batch))
+                for pair in payload if isinstance(payload,list) else []:
+                    addr=str((pair.get("baseToken") or {}).get("address") or "")
+                    if not addr:continue
+                    key=(chain,addr if chain=="solana" else addr.lower())
+                    info=pair.get("info") or {}
+                    links=[]
+                    for entry in (info.get("socials") or [])+(info.get("websites") or []):
+                        if isinstance(entry,dict) and str(entry.get("url") or "").startswith("https://"):
+                            links.append({"platform":str(entry.get("platform") or entry.get("label") or "web"),
+                                          "url":entry["url"]})
+                    if len(links)>len(pair_links.get(key,[])):pair_links[key]=links
+            except Exception as exc:
+                print("Bulk token social metadata unavailable:",chain,str(exc)[:100])
     for index,item in enumerate(items):
         chain=item["network"]
         address=item["contract"]
         profile=lookup.get((chain,address if chain=="solana" else address.lower()),{})
-        links=[]
+        links=list(pair_links.get((chain,address if chain=="solana" else address.lower()),[]))
         for link in profile.get("links") or []:
             if isinstance(link,dict) and str(link.get("url","")).startswith("https://"):
                 links.append({"platform":str(link.get("type") or link.get("label") or "web"),"url":link["url"]})
+        links=list({link["url"]:link for link in links}.values())
         item["social_monitor"]={"links":links[:15],"organic_mentions_24h":None,
             "engagement_24h":None,"trending":"unverified",
             "status":"links_only" if links else "unavailable"}
