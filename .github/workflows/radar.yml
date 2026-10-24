@@ -11,7 +11,7 @@ permissions:
   id-token: write
 concurrency:
   group: github-pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   scan-and-publish:
     runs-on: ubuntu-latest
