@@ -52,6 +52,22 @@ async function load(){
   $('radar-summary').textContent=all.length?all.length+' مورد برای بررسی':'نامزدی در فهرست فعلی نیست';
   $('radar-explain').textContent='فهرست پژوهشی است؛ ریسک قرارداد و قابلیت فروش باید جداگانه بررسی شوند.';
   $('message').textContent='این دکمه فقط گزارش منتشرشده را دوباره می‌خواند.';
+  try{
+    const hres=await fetch('https://raw.githubusercontent.com/nimania/crypto/hourly-data/hourly.json?t='+Date.now(),{cache:'no-store'});
+    if(hres.ok){
+      const h=await hres.json();
+      const records=h.tokens||{};
+      for(const item of all){
+        const id=item.network+':'+(item.network==='solana'?item.contract:String(item.contract||'').toLowerCase());
+        const recent=records[id];
+        if(recent) {
+          item.hourly_technical=recent;
+          if(recent.last_news)item.web_attention=recent.last_news;
+        }
+      }
+      $('message').textContent='اسکن اصلی: '+(d.generated_at||'نامشخص')+' | پایش سریع: '+(h.generated_at||'هنوز اجرا نشده')+' | پوشش: '+(h.coverage?.processed??0)+' توکن';
+    } else $('message').textContent='پایش سریع هنوز منتشر نشده؛ اطلاعات اسکن اصلی نمایش داده می‌شود.';
+  }catch(error){$('message').textContent='پایش سریع در دسترس نیست؛ اطلاعات اسکن اصلی نمایش داده می‌شود.';}
   render();
  }catch(e){
   $('report-status').textContent='داده در دسترس نیست';
