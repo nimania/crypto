@@ -211,7 +211,7 @@ def enrich_metadata(items):
         chain=str(row.get("chainId","")).lower().replace("eth","ethereum") if row.get("chainId")=="eth" else str(row.get("chainId","")).lower()
         address=str(row.get("tokenAddress") or "")
         if address: lookup[(chain,address if chain=="solana" else address.lower())]=row
-    for item in items:
+    for index,item in enumerate(items):
         chain=item["network"]
         address=item["contract"]
         profile=lookup.get((chain,address if chain=="solana" else address.lower()),{})
@@ -225,6 +225,10 @@ def enrich_metadata(items):
         supply={"total_supply":None,"circulating_supply":None,"unreleased_supply":None,
                 "creator_held":None,"creator_held_pct":None,"status":"unavailable"}
         try:
+            if index>=12:
+                supply["status"]="not_queried_this_run"
+                item["token_supply"]=supply
+                continue
             url=GECKO+"/networks/"+GECKO_NETWORKS[chain]+"/tokens/"+quote(address,safe="")+"/info"
             attrs=((fetch_json(url).get("data") or {}).get("attributes") or {})
             for key in ("total_supply","circulating_supply"):
