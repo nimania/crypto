@@ -2,6 +2,7 @@
 import json, os, time, math
 from correlation import measure
 from relative_strength import relative_strength
+from web_attention import enrich_news
 from btc_replay import replay_reactions
 from btc_structure import analyze_btc
 from btc_pivots import levels_from_completed_closes
@@ -340,6 +341,8 @@ def main():
         item['sellability']='NOT_SIMULATED'
         time.sleep(0.3)
     enrich_metadata(watchlist)
+    news_queries=enrich_news(watchlist,limit=5)
+    print('Web news samples queried:',news_queries)
     for item in candidates:
         source_health[item["network"]].setdefault("screened_candidates",0)
         source_health[item["network"]]["screened_candidates"]+=1
