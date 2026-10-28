@@ -48,7 +48,8 @@ async def main():
                 tools=await session.list_tools()
                 match=next((t for t in tools.tools if t.name=="ic_arbitrage"),None)
                 if match is None: raise RuntimeError("ic_arbitrage tool absent")
-                props=match.inputSchema.get("properties",{})
+                schema=getattr(match,"inputSchema",None) or getattr(match,"input_schema",None) or getattr(match,"parameters",None) or {}
+                props=schema.get("properties",{}) if isinstance(schema,dict) else {}
                 args={}
                 if "quote" in props: args["quote"]="IRT"
                 if "limit" in props: args["limit"]=30
