@@ -22,12 +22,12 @@ def rows_from(obj):
     return []
 def normalize(item):
     if not isinstance(item, dict): return None
-    buy=item.get("buy_exchange") or item.get("cheapest_exchange") or item.get("buy_from")
-    sell=item.get("sell_exchange") or item.get("most_expensive_exchange") or item.get("sell_at")
+    buy=item.get("buy_exchange") or item.get("cheapest_exchange") or item.get("buy_from") or item.get("buy_on")
+    sell=item.get("sell_exchange") or item.get("most_expensive_exchange") or item.get("sell_at") or item.get("sell_on")
     if isinstance(buy,dict): buy=buy.get("name_fa") or buy.get("exchange") or buy.get("name")
     if isinstance(sell,dict): sell=sell.get("name_fa") or sell.get("exchange") or sell.get("name")
-    ask=number(item,"buy_ask_toman","ask_toman","buy_price_toman","lowest_ask")
-    bid=number(item,"sell_bid_toman","bid_toman","sell_price_toman","highest_bid")
+    ask=number(item,"buy_ask_toman","ask_toman","buy_price_toman","lowest_ask","buy_price_toman")
+    bid=number(item,"sell_bid_toman","bid_toman","sell_price_toman","highest_bid","sell_price_toman")
     pct=number(item,"spread_pct","gross_spread_pct","gap_pct","profit_pct")
     if ask and bid and ask>0: pct=(bid-ask)/ask*100
     if not buy or not sell or pct is None or pct<=0: return None
@@ -52,7 +52,7 @@ async def main():
                 props=schema.get("properties",{}) if isinstance(schema,dict) else {}
                 args={}
                 if "quote" in props: args["quote"]="IRT"
-                if "limit" in props: args["limit"]=30
+                if "limit" in props: args["limit"]=25
                 output=await session.call_tool("ic_arbitrage",arguments=args)
                 if output.isError: raise RuntimeError("ic_arbitrage returned error")
                 payload=getattr(output,"structuredContent",None)
@@ -62,8 +62,9 @@ async def main():
                 raw=rows_from(payload)
                 parsed=[x for x in (normalize(i) for i in raw) if x]
                 parsed.sort(key=lambda x:x["gross_spread_pct"],reverse=True)
-                result.update(status="ok" if parsed else "partial",opportunities=parsed,
-                              message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads. Fees and execution unverified.")
+                errors=payload.get("errors",{}) if isinstance(payload,dict) else {}
+                result.update(status="partial" if errors or (raw and not parsed) else "ok",opportunities=parsed,
+                              message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads; {len(errors)} exchange errors. Fees and execution unverified.", exchange_errors=errors)
                 if raw and not parsed: result["message"]+=" Provider schema needs review; no negative market conclusion."
     except Exception as exc:
         def unpack(error):
