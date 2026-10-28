@@ -2,6 +2,7 @@
 """Read-only MCP arbitrage collection. Never implies executable profitability."""
 import asyncio
 import json
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -64,7 +65,13 @@ async def main():
                               message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads. Fees and execution unverified.")
                 if raw and not parsed: result["message"]+=" Provider schema needs review; no negative market conclusion."
     except Exception as exc:
-        result["message"]=f"Source unavailable or incompatible: {type(exc).__name__}: {str(exc)[:250]}"
+        def unpack(error):
+            children=getattr(error,"exceptions",None)
+            if children:
+                return " | ".join(unpack(e) for e in children)[:900]
+            return f"{type(error).__name__}: {str(error)}"
+        result["message"]=f"Source unavailable or incompatible: {unpack(exc)}"[:1000]
+        print(traceback.format_exc(),flush=True)
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
     OUTPUT.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print(result["status"],result["message"])
