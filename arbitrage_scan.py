@@ -3,6 +3,7 @@
 import asyncio
 import json
 import traceback
+from arbitrage_verify import verify
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -65,6 +66,9 @@ async def main():
                 # A fully failed provider must never be reported as a successful empty market.
                 complete=len(errors)==0
                 status="ok" if complete and (not raw or len(parsed)==len(raw)) else "partial"
+                # Depth and fee verification is intentionally bounded to the top five to limit provider load.
+                for entry in parsed[:5]:
+                    entry["verification"]=await verify(session,entry)
                 result.update(status=status,opportunities=parsed,
                               message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads; {len(errors)} exchange errors. Fees and execution unverified.", exchange_errors=errors,raw_count=len(raw))
                 if raw and not parsed: result["message"]+=" Provider schema needs review; no negative market conclusion."
