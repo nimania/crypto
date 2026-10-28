@@ -66,9 +66,36 @@ async def main():
                 # A fully failed provider must never be reported as a successful empty market.
                 complete=len(errors)==0
                 status="ok" if complete and (not raw or len(parsed)==len(raw)) else "partial"
-                # Depth and fee verification is intentionally bounded to the top five to limit provider load.
-                for entry in parsed[:5]:
+                # The largest raw spreads often involve instant-swap brokers without
+                # public order books. Verify the top five *eligible* exchange pairs,
+                # rather than wasting the verification budget on unsupported brokers.
+                books={"nobitex","wallex","bitpin","ramzinex","tabdeal","ompfinex","exir","bit24"}
+                verified=0
+                for entry in parsed:
+                    if entry["buy_exchange"] not in books or entry["sell_exchange"] not in books:
+                        entry["verification"]={
+                            "status":"unverified","book_status":"unsupported_broker",
+                            "fee_status":"unknown","transfer_status":"unverified",
+                            "estimated_net_toman":None,
+                            "note":"One or both brokers lack a public order book; shown spread is indicative."
+                        }
+                        continue
+                    if verified>=5:
+                        entry["verification"]={
+                            "status":"not_checked","book_status":"not_checked",
+                            "fee_status":"unknown","transfer_status":"unverified",
+                            "estimated_net_toman":None
+                        }
+                        continue
                     entry["verification"]=await verify(session,entry)
+                    verified+=1
+                result["verification_summary"]={
+                    "book_eligible_checked":verified,
+                    "unsupported_broker_pairs":sum(
+                        v["verification"]["book_status"]=="unsupported_broker" for v in parsed
+                    ),
+                    "total_candidates":len(parsed)
+                }
                 result.update(status=status,opportunities=parsed,
                               message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads; {len(errors)} exchange errors. Fees and execution unverified.", exchange_errors=errors,raw_count=len(raw))
                 if raw and not parsed: result["message"]+=" Provider schema needs review; no negative market conclusion."
