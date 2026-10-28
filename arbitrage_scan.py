@@ -50,10 +50,12 @@ async def main():
                 if match is None: raise RuntimeError("ic_arbitrage tool absent")
                 args={"quote":"IRT","limit":25,"executable_only":True}
                 output=await session.call_tool("ic_arbitrage",arguments=args)
-                if output.isError: raise RuntimeError("ic_arbitrage returned error: "+ " | ".join(str(getattr(c,"text","")) for c in output.content)[:600])
-                payload=getattr(output,"structuredContent",None)
+                if getattr(output,"isError",getattr(output,"is_error",False)):
+                    raise RuntimeError("ic_arbitrage returned error: "+ " | ".join(str(getattr(c,"text","")) for c in getattr(output,"content",[]))[:600])
+                payload=getattr(output,"structuredContent",None) or getattr(output,"structured_content",None)
                 if not payload:
-                    texts=[x.text for x in output.content if getattr(x,"type",None)=="text"]
+                    texts=[x.text for x in getattr(output,"content",[]) if getattr(x,"type",None)=="text"]
+                    if not texts: raise RuntimeError("MCP returned no structured content or text")
                     payload=json.loads("\n".join(texts))
                 raw=rows_from(payload)
                 parsed=[x for x in (normalize(i) for i in raw) if x]
