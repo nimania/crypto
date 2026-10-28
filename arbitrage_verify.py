@@ -68,7 +68,8 @@ async def verify(session, item, *, budget_toman=10_000_000):
         if bp is not None and sp is not None:
             proof["fee_status"]="reported"
             proof["trade_buy_pct"]=bp; proof["trade_sell_pct"]=sp
-            proof["estimated_net_before_transfer_toman"]=round(proof["sale_proceeds_toman"]*(1-sp/100)-proof["purchase_cost_toman"]*(1+bp/100),2)
+            if proof["book_status"]=="sufficient":
+                proof["estimated_net_before_transfer_toman"]=round(proof["sale_proceeds_toman"]*(1-sp/100)-proof["purchase_cost_toman"]*(1+bp/100),2)
         else: proof["fee_status"]="missing"
         network_rows=fees.get("networks",[])
         source=[n for n in network_rows if n.get("exchange")==buy and n.get("withdraw") is True]
