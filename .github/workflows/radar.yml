@@ -69,10 +69,17 @@ jobs:
         with:
           path: state/btc_levels.json
           key: btc-levels-${{ github.run_id }}
+      - name: Scan Iranian arbitrage (read-only)
+        continue-on-error: true
+        run: |
+          python -m pip install 'mcp>=1,<3' iran-crypto-mcp
+          timeout 150 python arbitrage_scan.py
       - name: Build site
         run: |
           cp index.html output/index.html
           cp coin.html output/coin.html
+          cp arbitrage.html output/arbitrage.html
+          if [ ! -f output/arbitrage.json ]; then echo '{"status":"unavailable","opportunities":[],"message":"Arbitrage scan failed","generated_at_utc":null}' > output/arbitrage.json; fi
           touch output/.nojekyll
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
