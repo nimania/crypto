@@ -48,13 +48,9 @@ async def main():
                 tools=await session.list_tools()
                 match=next((t for t in tools.tools if t.name=="ic_arbitrage"),None)
                 if match is None: raise RuntimeError("ic_arbitrage tool absent")
-                schema=getattr(match,"inputSchema",None) or getattr(match,"input_schema",None) or getattr(match,"parameters",None) or {}
-                props=schema.get("properties",{}) if isinstance(schema,dict) else {}
-                args={}
-                if "quote" in props: args["quote"]="IRT"
-                if "limit" in props: args["limit"]=25
+                args={"quote":"IRT","limit":25,"executable_only":True}
                 output=await session.call_tool("ic_arbitrage",arguments=args)
-                if output.isError: raise RuntimeError("ic_arbitrage returned error")
+                if output.isError: raise RuntimeError("ic_arbitrage returned error: "+ " | ".join(str(getattr(c,"text","")) for c in output.content)[:600])
                 payload=getattr(output,"structuredContent",None)
                 if not payload:
                     texts=[x.text for x in output.content if getattr(x,"type",None)=="text"]
@@ -63,8 +59,12 @@ async def main():
                 parsed=[x for x in (normalize(i) for i in raw) if x]
                 parsed.sort(key=lambda x:x["gross_spread_pct"],reverse=True)
                 errors=payload.get("errors",{}) if isinstance(payload,dict) else {}
-                result.update(status="partial" if errors or (raw and not parsed) else "ok",opportunities=parsed,
-                              message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads; {len(errors)} exchange errors. Fees and execution unverified.", exchange_errors=errors)
+                if not isinstance(errors,dict): errors={"provider":str(errors)}
+                # A fully failed provider must never be reported as a successful empty market.
+                complete=len(errors)==0
+                status="ok" if complete and (not raw or len(parsed)==len(raw)) else "partial"
+                result.update(status=status,opportunities=parsed,
+                              message=f"{len(raw)} raw records; {len(parsed)} recognized positive spreads; {len(errors)} exchange errors. Fees and execution unverified.", exchange_errors=errors,raw_count=len(raw))
                 if raw and not parsed: result["message"]+=" Provider schema needs review; no negative market conclusion."
     except Exception as exc:
         def unpack(error):
