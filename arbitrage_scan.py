@@ -4,6 +4,7 @@ import asyncio
 import json
 import traceback
 from arbitrage_verify import verify
+from arbitrage_history import merge, read_previous
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -107,6 +108,10 @@ async def main():
             return f"{type(error).__name__}: {str(error)}"
         result["message"]=f"Source unavailable or incompatible: {unpack(exc)}"[:1000]
         print(traceback.format_exc(),flush=True)
+    if result["status"] in ("ok","partial"):
+        previous=read_previous()
+        result["history"]=merge(previous,result)
+        result["history_note"]="Observed snapshots only; intervals between polls are unobserved. Missing rows are not proof of closure."
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
     OUTPUT.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print(result["status"],result["message"])
