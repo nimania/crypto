@@ -1,6 +1,7 @@
 """Conservative, read-only verification of order-book and fee evidence."""
 import asyncio
 import json
+from arbitrage_tiers import calculate_tiers
 
 def parse_result(result):
     if getattr(result,"isError",getattr(result,"is_error",False)):
@@ -71,6 +72,8 @@ async def verify(session, item, *, budget_toman=10_000_000):
             if proof["book_status"]=="sufficient":
                 proof["estimated_net_before_transfer_toman"]=round(proof["sale_proceeds_toman"]*(1-sp/100)-proof["purchase_cost_toman"]*(1+bp/100),2)
         else: proof["fee_status"]="missing"
+        proof["capital_scenarios"]=calculate_tiers(asks,bids,bp,sp)
+        proof["capital_scenarios_note"]="Orderbook snapshots only; transfer cost, latency, deposit/withdrawal and identity are unverified."
         network_rows=fees.get("networks",[])
         source=[n for n in network_rows if n.get("exchange")==buy and n.get("withdraw") is True]
         target=[n for n in network_rows if n.get("exchange")==sell and n.get("deposit") is True]
