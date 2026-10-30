@@ -1,0 +1,41 @@
+name: PendarCrypto PR checks
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Existing and new Python tests
+        run: python -m unittest discover -s tests -v
+      - name: Verify Python syntax
+        run: python -m compileall -q radar.py arbitrage_scan.py arbitrage_verify.py arbitrage_tiers.py arbitrage_history.py
+      - name: Check page and script presence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for filename in ('index.html','coin.html','arbitrage.html','arbitrage-detail.html','calculator.html','guide.html','styles.css','site.js'):
+              assert Path(filename).is_file(), filename
+          for page in ('index.html','coin.html','arbitrage.html','arbitrage-detail.html','calculator.html','guide.html'):
+              contents=Path(page).read_text(encoding='utf8')
+              assert 'site.js' in contents and 'styles.css' in contents, page
+          assert 'capital_scenarios' in Path('arbitrage-detail.html').read_text(encoding='utf8')
+          PY
+      - name: Validate scripts
+        run: |
+          node --check site.js
+          python - <<'PY'
+          from pathlib import Path
+          for page in ('index.html','coin.html','arbitrage.html','arbitrage-detail.html','calculator.html'):
+              html=Path(page).read_text(encoding='utf8')
+              js=html.split('<script>',1)[1].split('</script>',1)[0]
+              Path('/tmp/'+page+'.cjs').write_text(js,encoding='utf8')
+          PY
+          for file in /tmp/*.html.cjs; do node --check "$file"; done
