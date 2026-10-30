@@ -56,3 +56,15 @@ python radar.py
 - `arbitrage_history.py` merges the latest published JSON's bounded history with a new scan. Observations are sparse (nominally hourly), may be lost when a deployment fails or previous URL cannot be retrieved, and do not establish continuous opportunity lifetimes. Current candidates are a truncated top-25 list; missing pairs are not necessarily closed.
 - `arbitrage.html` links to the detail page. The workflow copies it to Pages. Unit tests cover snapshot merge. No execution permissions or wallet secrets are involved.
 - **Pending validation:** green CI/Pages deployment, latest `arbitrage.json` containing `history`, navigation, and browser-level calculator functionality. This does not implement live multi-frequency sampling, verified minimum/maximum executable capital, or real withdrawal/deposit confirmation.
+
+## سیاست توسعه بدون حذف قابلیت‌های موجود — 2026-10-30
+
+**خط مبنای قابل بازگشت:** [backup/pendarcrypto-baseline-2026-10-30](https://github.com/nimania/crypto/tree/backup/pendarcrypto-baseline-2026-10-30)؛ این شاخه قبل از توسعه فازهای بعدی از `main` ایجاد شده است.
+
+- تغییرات آینده **افزایشی** باشند و هیچ‌کدام از مسیرهای موجود (`index.html`، `coin.html`، `arbitrage.html`، `arbitrage-detail.html`، `calculator.html`، `guide.html`) یا هدر مشترک را بی‌دلیل حذف/جایگزین نکنند.
+- اسکن DEX چندشبکه‌ای، همبستگی و ساختار BTC، آربیتراژ صرافی‌های ایران، اعتبارسنجی دفتر سفارش، محاسبه‌گر، تاریخچه، پیوندهای صفحه رمزارز و راهنما باید حفظ شوند.
+- طرح روشن، قلم وزیرمتن و هویت «پندارکریپتو» حفظ شوند؛ بازطراحی نباید عملکرد داده‌ای را قربانی ظاهر کند.
+- پیش از ادغام و انتشار: آزمون‌های فعلی، صحت HTML/JS و پیوندها، سازگاری schema JSON، و تهیه نسخه قبلی بررسی شوند. برای داده تازه از فیلد اختیاری و سازگار با گذشته استفاده شود؛ مصرف‌کننده‌های فعلی نباید بشکنند.
+- برای هر قابلیت بزرگ، ابتدا شاخه مجزا/PR و آزمایش؛ انتشار روی `main` فقط پس از تأیید. در صورت مشکل، بازگشت به commit شناخته‌شده بدون پاک‌کردن داده‌ها.
+- اسکن یا استقرار ناموفق نباید به‌صورت فرصت صفر یا سود قطعی نمایش داده شود؛ این محصول read-only باقی می‌ماند مگر با تصمیم مستقل و صریح کاربر.
+- وجود شاخه پشتیبان به‌تنهایی پشتیبان‌گیری از تاریخچه خارج از مخزن یا اثبات سلامت آخرین استقرار نیست. تاریخچه داده‌ها نیز باید به‌طور مستقل پایدار و پشتیبان‌گیری شود.
