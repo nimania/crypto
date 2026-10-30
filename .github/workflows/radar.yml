@@ -50,12 +50,15 @@ jobs:
           from pathlib import Path
           for page in ("index.html", "coin.html"):
               html = Path(page).read_text(encoding="utf-8")
-              assert html.count("<script>") == html.count("</script>") == 1, page
+              assert html.count("<script>") == 1, page
+              assert html.count("</script>") == 2, page
+              assert '<script src="./site.js" defer></script>' in html, page
               javascript = html.split("<script>", 1)[1].split("</script>", 1)[0]
               Path(page + ".check.cjs").write_text(javascript, encoding="utf-8")
           PY
           node --check index.html.check.cjs
           node --check coin.html.check.cjs
+          node --check site.js
       - name: Restore BTC monitoring state
         uses: actions/cache/restore@v4
         with:
