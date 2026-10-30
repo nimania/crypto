@@ -32,12 +32,14 @@ jobs:
           from pathlib import Path
           html = Path("index.html").read_text(encoding="utf-8")
           assert html.count("<script>") == 1
-          assert html.count("</script>") == 1
+          assert html.count("</script>") == 2
+          assert '<script src="./site.js" defer></script>' in html
           assert html.count("</html>") == 1
           assert html.strip().endswith("</script></body></html>")
           assert "async function load()" in html
           coin = Path("coin.html").read_text(encoding="utf-8")
-          assert coin.count("<script>") == coin.count("</script>") == 1
+          assert coin.count("<script>") == 1 and coin.count("</script>") == 2
+          assert '<script src="./site.js" defer></script>' in coin
           assert coin.count("</html>") == 1
           assert coin.strip().endswith("</script></body></html>")
           print("Dashboard HTML structure OK")
