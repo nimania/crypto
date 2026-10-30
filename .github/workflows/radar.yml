@@ -79,6 +79,7 @@ jobs:
           cp index.html output/index.html
           cp coin.html output/coin.html
           cp arbitrage.html output/arbitrage.html
+          cp arbitrage-detail.html output/arbitrage-detail.html
           if [ ! -f output/arbitrage.json ]; then echo '{"status":"unavailable","opportunities":[],"message":"Arbitrage scan failed","generated_at_utc":null}' > output/arbitrage.json; fi
           touch output/.nojekyll
       - name: Upload site
