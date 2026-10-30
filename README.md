@@ -49,3 +49,10 @@ python radar.py
 ### اعتبارسنجی مرحله دوم آربیتراژ (آزمایشی)
 
 اسکن ساعتی برای **پنج اختلاف خام بزرگ‌تر** تلاش می‌کند دفتر سفارش خرید و فروش را با سرمایه فرضی ۱۰ میلیون تومان بررسی کند و در صورت امکان کارمزدهای گزارش‌شده را ثبت کند. داده‌های جدید در فیلد `verification` هر فرصت از `arbitrage.json` قرار می‌گیرند. وضعیت `estimated_before_transfer` صرفاً **برآورد قبل از انتقال** است؛ هزینه برداشت، اسلیپیج پس از ثبت سفارش، کارمزدهای اختصاصی کاربر، محدودیت حساب، واریز واقعی و تأخیر بازار در آن تأیید نشده‌اند. برای کارگزارهای بدون دفتر سفارش معتبر، `book_status=unavailable` ثبت می‌شود. هیچ معامله یا انتقالی اجرا نمی‌شود. موفقیت عملیاتی این تغییرات تا اجرای جدید Actions تأیید نشده است.
+
+## Arbitrage Intelligence V2 — experimental (2026-10-30)
+
+- `arbitrage-detail.html` provides per-pair static scenario calculations for user-provided fees and transfer costs, plus observed spread timestamps. It does **not** provide validated net executable profit, and does not prove trade capacity or live deposits/withdrawals.
+- `arbitrage_history.py` merges the latest published JSON's bounded history with a new scan. Observations are sparse (nominally hourly), may be lost when a deployment fails or previous URL cannot be retrieved, and do not establish continuous opportunity lifetimes. Current candidates are a truncated top-25 list; missing pairs are not necessarily closed.
+- `arbitrage.html` links to the detail page. The workflow copies it to Pages. Unit tests cover snapshot merge. No execution permissions or wallet secrets are involved.
+- **Pending validation:** green CI/Pages deployment, latest `arbitrage.json` containing `history`, navigation, and browser-level calculator functionality. This does not implement live multi-frequency sampling, verified minimum/maximum executable capital, or real withdrawal/deposit confirmation.
