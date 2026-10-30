@@ -19,7 +19,7 @@
 <section class="card"><h2>اعتبار داده‌ها و وضعیت بررسی</h2><div id="quality"></div></section>
 </div><p class="fine">آدرس قرارداد همراه با شبکه، شناسه دارایی است؛ نمادهای مشابه ممکن است قراردادهای متفاوتی داشته باشند. داده‌ها از گزارش ساعتی منتشرشده خوانده می‌شوند، نه مستقیماً از کیف‌پول.</p>
 </main>
-<script>
+<script src="./site.js" defer></script><script>
 const el=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const chain=params.get('network'),contract=params.get('contract');
@@ -71,4 +71,4 @@ async function load(){
  }catch(e){el('state').textContent='دریافت داده ناموفق بود: '+e.message}
 }
 load();
-</script><script src="./site.js" defer></script></body></html>
+</script></body></html>
