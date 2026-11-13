@@ -28,6 +28,8 @@ jobs:
         run: |
           cp hourly.json /tmp/crypto-hourly.json
           git fetch origin hourly-data
+          # Preserve the generated payload before switching to its data branch.
+          rm hourly.json
           git checkout hourly-data
           cp /tmp/crypto-hourly.json hourly.json
           git config user.name 'github-actions[bot]'
