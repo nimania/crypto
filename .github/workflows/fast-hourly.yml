@@ -1,5 +1,8 @@
 name: Fast Hourly Technical Monitor
 on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/fast-hourly.yml", "fast_hourly.py"]
   schedule:
     - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
