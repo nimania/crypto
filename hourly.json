@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-11-26T19:56:41.100717+00:00",
+  "generated_at": "2026-11-27T02:36:32.731083+00:00",
   "source": "GeckoTerminal hour OHLCV",
   "coverage": {
-    "requested": 81,
-    "processed": 81,
-    "available": 25
+    "requested": 84,
+    "processed": 84,
+    "available": 28
   },
   "tokens": {
     "base:0x29cc30f9d113b356ce408667aa6433589cecbdca": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.09712048371151019,
-      "previous_close": 0.09757544664107119,
-      "resistance_prior_19": 0.11370525934199299,
-      "support_prior_19": 0.0809249149798878,
+      "last_close": 0.0970652459578851,
+      "previous_close": 0.101854146193074,
+      "resistance_prior_19": 0.102438085034011,
+      "support_prior_19": 0.0938387532982159,
       "new_event": false,
       "last_event_key": "base:0x29cc30f9d113b356ce408667aa6433589cecbdca:1795557600:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
@@ -31,16 +31,16 @@
     },
     "base:0xacfe6019ed1a7dc6f7b508c02d1b04ec88cc21bf": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 27.160203488682196,
-      "previous_close": 26.915888113174596,
-      "resistance_prior_19": 30.192736593498896,
-      "support_prior_19": 26.694143389450495,
-      "new_event": false,
-      "last_event_key": "base:0xacfe6019ed1a7dc6f7b508c02d1b04ec88cc21bf:1795626000:PROVISIONAL_HOURLY_BREAKOUT",
+      "news_trigger": true,
+      "signal": "PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_close": 26.201788823737,
+      "previous_close": 26.5114204213455,
+      "resistance_prior_19": 27.809958474512797,
+      "support_prior_19": 26.340793618160898,
+      "new_event": true,
+      "last_event_key": "base:0xacfe6019ed1a7dc6f7b508c02d1b04ec88cc21bf:1795741200:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
         "status": "ambiguous_identity",
         "source": "GDELT DOC 2.0",
@@ -50,18 +50,32 @@
         "note": "Sampled relevant news is not proof of organic trends or total web coverage."
       }
     },
-    "base:0xb20000000000000000000078ee7ce2fe4908108c": {
+    "base:0xc52aedec3374422d7510e294cfaa90799595cba3": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 151.19810755372498,
-      "previous_close": 150.747733994881,
-      "resistance_prior_19": 152.88595578329898,
-      "support_prior_19": 148.780052803868,
+      "last_close": 0.00019613207488353499,
+      "previous_close": 0.00019697739145617898,
+      "resistance_prior_19": 0.00022484414103266596,
+      "support_prior_19": 0.000187669731367239,
       "new_event": false,
-      "last_event_key": "base:0xb20000000000000000000078ee7ce2fe4908108c:1795590000:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_event_key": null,
+      "last_news": null
+    },
+    "base:0xb20000000000000000000078ee7ce2fe4908108c": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": true,
+      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
+      "last_close": 153.041094807864,
+      "previous_close": 151.870628902292,
+      "resistance_prior_19": 151.870628902292,
+      "support_prior_19": 148.780052803868,
+      "new_event": true,
+      "last_event_key": "base:0xb20000000000000000000078ee7ce2fe4908108c:1795741200:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
         "status": "unavailable",
         "source": "GDELT DOC 2.0",
@@ -74,15 +88,15 @@
     },
     "base:0x311935cd80b76769bf2ecc9d8ab7635b2139cf82": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
-      "news_trigger": true,
-      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
-      "last_close": 71.2303826486357,
-      "previous_close": 70.96695933436679,
-      "resistance_prior_19": 71.14349019646949,
-      "support_prior_19": 70.4996730678299,
-      "new_event": true,
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 71.3024342499425,
+      "previous_close": 71.16489504734339,
+      "resistance_prior_19": 71.64585135630838,
+      "support_prior_19": 70.57321943850239,
+      "new_event": false,
       "last_event_key": "base:0x311935cd80b76769bf2ecc9d8ab7635b2139cf82:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
         "status": "ambiguous_identity",
@@ -93,32 +107,49 @@
         "note": "Sampled relevant news is not proof of organic trends or total web coverage."
       }
     },
-    "base:0xc52aedec3374422d7510e294cfaa90799595cba3": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
+    "base:0xff8104251e7761163fac3211ef5583fb3f8583d6": {
+      "status": "unavailable",
       "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.00020335488101463198,
-      "previous_close": 0.000188143657098618,
-      "resistance_prior_19": 0.00022484414103266596,
-      "support_prior_19": 0.000172996004344693,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": null,
       "last_news": null
     },
-    "base:0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
+    "base:0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee": {
+      "status": "unavailable",
       "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.39408079039206095,
-      "previous_close": 0.391389389816746,
-      "resistance_prior_19": 0.406693593770177,
-      "support_prior_19": 0.391389389816746,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
-      "last_event_key": "base:0x940181a94a35a4569e4529a3cdfb74e38fd98631:1795683600:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_event_key": "base:0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee:1795590000:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_news": {
+        "status": "deferred_capacity",
+        "articles": []
+      },
+      "last_closed_at": 1795590000
+    },
+    "base:0x4ed4e862860bed51a9570b96d89af5e1b0efefed": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
+    "base:0xb200000000000000000000397293cb8cda9a10c5": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": true,
+      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
+      "last_close": 617.133759981202,
+      "previous_close": 599.917474587527,
+      "resistance_prior_19": 607.8500295453109,
+      "support_prior_19": 596.5017741699529,
+      "new_event": true,
+      "last_event_key": "base:0xb200000000000000000000397293cb8cda9a10c5:1795741200:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
         "status": "unavailable",
         "source": "GDELT DOC 2.0",
@@ -126,7 +157,28 @@
         "articles": [],
         "trend_status": "not_established",
         "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
-        "error": "HTTP Error 429: Too Many Requests"
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      }
+    },
+    "base:0x07b3d902783c3c12b077508c3b5c00113d1291d0": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.0127543819374893,
+      "previous_close": 0.0130608870560605,
+      "resistance_prior_19": 0.013180424383866799,
+      "support_prior_19": 0.012568843110632,
+      "new_event": false,
+      "last_event_key": "base:0x07b3d902783c3c12b077508c3b5c00113d1291d0:1795024800:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_news": {
+        "status": "ambiguous_identity",
+        "source": "GDELT DOC 2.0",
+        "sample_count_24h": null,
+        "articles": [],
+        "trend_status": "not_established",
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage."
       }
     },
     "base:0xb2000000000000000000002d0ba3164cc74f58b7": {
@@ -147,72 +199,36 @@
       },
       "last_closed_at": 1795683600
     },
-    "base:0x4ed4e862860bed51a9570b96d89af5e1b0efefed": {
-      "status": "unavailable",
+    "base:0x940181a94a35a4569e4529a3cdfb74e38fd98631": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
       "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.403716952738232,
+      "previous_close": 0.40191724482278696,
+      "resistance_prior_19": 0.406693593770177,
+      "support_prior_19": 0.391389389816746,
       "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "base:0xb200000000000000000000397293cb8cda9a10c5": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null,
-      "last_closed_at": 1795417200
-    },
-    "base:0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": "base:0x3f5bf3edac59d650d8fdf9657a71f2f904a3a4ee:1795590000:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_event_key": "base:0x940181a94a35a4569e4529a3cdfb74e38fd98631:1795683600:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      },
-      "last_closed_at": 1795590000
-    },
-    "base:0xb2000000000000000000007b9fcbd005511acbd5": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "base:0xb200000000000000000000f720c26062bc3067da": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "base:0x07b3d902783c3c12b077508c3b5c00113d1291d0": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": "base:0x07b3d902783c3c12b077508c3b5c00113d1291d0:1795024800:PROVISIONAL_HOURLY_BREAKDOWN",
-      "last_news": {
-        "status": "ambiguous_identity",
+        "status": "unavailable",
         "source": "GDELT DOC 2.0",
         "sample_count_24h": null,
         "articles": [],
         "trend_status": "not_established",
-        "note": "Sampled relevant news is not proof of organic trends or total web coverage."
-      },
-      "last_closed_at": 1795388400
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
+        "error": "HTTP Error 429: Too Many Requests"
+      }
+    },
+    "base:0xbf8e8f0e8866a7052f948c16508644347c57aba3": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
     },
     "base:0x4200000000000000000000000000000000000006": {
       "status": "unavailable",
@@ -241,10 +257,15 @@
       "last_closed_at": 1795590000
     },
     "base:0x8b7dde054be9d180c1be7fae0874697374a49832": {
-      "status": "unavailable",
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
       "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.669810658626757,
+      "previous_close": 0.677396035556386,
+      "resistance_prior_19": 0.677396035556386,
+      "support_prior_19": 0.6475402439366079,
       "new_event": false,
       "last_event_key": "base:0x8b7dde054be9d180c1be7fae0874697374a49832:1795024800:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
@@ -255,8 +276,7 @@
         "trend_status": "not_established",
         "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
         "error": "<urlopen error _ssl.c:1001: The handshake operation timed out>"
-      },
-      "last_closed_at": 1795683600
+      }
     },
     "base:0xb200000000000000000000fd2f87532b90095211": {
       "status": "unavailable",
@@ -302,30 +322,31 @@
       },
       "last_closed_at": 1795298400
     },
-    "base:0xe014d2a4da6e450f21b5050120d291e63c8940fd": {
+    "base:0xbf927b841994731c573bdf09ceb0c6b0aa887cdd": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.0906739825263167,
+      "previous_close": 0.08954712338816309,
+      "resistance_prior_19": 0.09080824573008339,
+      "support_prior_19": 0.08188877104741099,
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
+    "base:0x6985884c4392d348587b19cb9eaaf157f13271cd": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": null,
-      "last_news": null
+      "last_news": null,
+      "last_closed_at": 1795716000
     },
-    "base:0x6985884c4392d348587b19cb9eaaf157f13271cd": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 1.1053023305824,
-      "previous_close": 1.0705272568856599,
-      "resistance_prior_19": 1.11219197749773,
-      "support_prior_19": 1.0233388588848398,
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "base:0xc0634090f2fe6c6d75e61be2b949464abb498973": {
+    "base:0xe014d2a4da6e450f21b5050120d291e63c8940fd": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
@@ -344,10 +365,15 @@
       "last_news": null
     },
     "arbitrum:0x912ce59144191c1204e64559fe8253a0e49e6548": {
-      "status": "unavailable",
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
       "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.11404183942752599,
+      "previous_close": 0.113758071281514,
+      "resistance_prior_19": 0.11550671987787499,
+      "support_prior_19": 0.112088276223833,
       "new_event": false,
       "last_event_key": "arbitrum:0x912ce59144191c1204e64559fe8253a0e49e6548:1795651200:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
@@ -357,38 +383,20 @@
         "articles": [],
         "trend_status": "not_established",
         "note": "Sampled relevant news is not proof of organic trends or total web coverage."
-      },
-      "last_closed_at": 1795651200
-    },
-    "arbitrum:0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.026739865535476,
-      "previous_close": 0.026693464596494198,
-      "resistance_prior_19": 0.027873575673757197,
-      "support_prior_19": 0.026693464596494198,
-      "new_event": false,
-      "last_event_key": "arbitrum:0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e:1795590000:PROVISIONAL_HOURLY_BREAKDOWN",
-      "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
       }
     },
-    "arbitrum:0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf": {
+    "arbitrum:0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
-      "last_event_key": "arbitrum:0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf:1795186800:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_event_key": "arbitrum:0x0c1c1c109fe34733fca54b82d7b46b75cfb71f6e:1795590000:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
         "status": "deferred_capacity",
         "articles": []
       },
-      "last_closed_at": 1795680000
+      "last_closed_at": 1795716000
     },
     "arbitrum:0x004b506865409877c9fa29bfb1eba929984b9bbc": {
       "status": "unavailable",
@@ -408,38 +416,16 @@
       },
       "last_closed_at": 1795651200
     },
-    "arbitrum:0xf97f4df75117a78c1a5a0dbb814af92458539fb4": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": true,
-      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
-      "last_close": 9.21799014851356,
-      "previous_close": 9.15989700128713,
-      "resistance_prior_19": 9.20092448033958,
-      "support_prior_19": 9.01383043989549,
-      "new_event": true,
-      "last_event_key": "arbitrum:0xf97f4df75117a78c1a5a0dbb814af92458539fb4:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
-      "last_news": {
-        "status": "unavailable",
-        "source": "GDELT DOC 2.0",
-        "sample_count_24h": null,
-        "articles": [],
-        "trend_status": "not_established",
-        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
-        "error": "HTTP Error 429: Too Many Requests"
-      }
-    },
     "arbitrum:0xaf88d065e77c8cc2239327c5edb3a432268e5831": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.9986567955063369,
-      "previous_close": 1.00029762494109,
-      "resistance_prior_19": 1.00158949079178,
-      "support_prior_19": 0.998096514001264,
+      "last_close": 0.9991277323109178,
+      "previous_close": 1.0008055463744499,
+      "resistance_prior_19": 1.0008055463744499,
+      "support_prior_19": 0.9988247734152689,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
@@ -488,19 +474,37 @@
       },
       "last_closed_at": 1795683600
     },
-    "arbitrum:0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8": {
+    "arbitrum:0xf97f4df75117a78c1a5a0dbb814af92458539fb4": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 1.22632252787152,
-      "previous_close": 1.2118564892900099,
-      "resistance_prior_19": 1.26419950487134,
-      "support_prior_19": 1.2100119463344299,
+      "last_close": 9.263755285945958,
+      "previous_close": 9.297768302941849,
+      "resistance_prior_19": 9.340297536073198,
+      "support_prior_19": 9.085042885432319,
+      "new_event": false,
+      "last_event_key": "arbitrum:0xf97f4df75117a78c1a5a0dbb814af92458539fb4:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_news": {
+        "status": "unavailable",
+        "source": "GDELT DOC 2.0",
+        "sample_count_24h": null,
+        "articles": [],
+        "trend_status": "not_established",
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
+        "error": "HTTP Error 429: Too Many Requests"
+      }
+    },
+    "arbitrum:0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": null,
-      "last_news": null
+      "last_news": null,
+      "last_closed_at": 1795716000
     },
     "arbitrum:0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": {
       "status": "unavailable",
@@ -512,26 +516,34 @@
       "last_news": null,
       "last_closed_at": 1795683600
     },
-    "flare:0xad552a648c74d49e10027ab8a618a3ad4901c5be": {
+    "arbitrum:0xba5ddd1f9d7f570dc94a51479a000e3bce967196": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": null,
-      "last_news": null,
-      "last_closed_at": 1795683600
+      "last_news": null
     },
-    "flare:0xe7cd86e13ac4309349f30b3435a9d337750fc82d": {
+    "flare:0xad552a648c74d49e10027ab8a618a3ad4901c5be": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 1.0041018479311399,
-      "previous_close": 0.993847979467543,
-      "resistance_prior_19": 1.00459591080604,
-      "support_prior_19": 0.993847979467543,
+      "last_close": 0.9449442280759809,
+      "previous_close": 0.9444309208557299,
+      "resistance_prior_19": 0.955163898087813,
+      "support_prior_19": 0.9416689511302678,
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
+    "flare:0xe7cd86e13ac4309349f30b3435a9d337750fc82d": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": "flare:0xe7cd86e13ac4309349f30b3435a9d337750fc82d:1794942000:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
@@ -541,7 +553,8 @@
         "articles": [],
         "trend_status": "not_established",
         "note": "Sampled relevant news is not proof of organic trends or total web coverage."
-      }
+      },
+      "last_closed_at": 1795716000
     },
     "flare:0x6cd3a5ba46fa254d4d2e3c2b37350ae337e94a0f": {
       "status": "unavailable",
@@ -570,30 +583,31 @@
       "last_news": null
     },
     "flare:0x4c18ff3c89632c3dd62e796c0afa5c07c4c1b2b3": {
-      "status": "unavailable",
+      "status": "sufficient",
+      "last_closed_at": 1795737600,
+      "reason": "closed_candles_available",
       "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.9403143171272349,
+      "previous_close": 0.9387317299665249,
+      "resistance_prior_19": 0.9575046514638249,
+      "support_prior_19": 0.9333993354002629,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
     },
     "flare:0x1502fa4be69d526124d453619276faccab275d3d": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
+      "status": "unavailable",
       "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 1699.4420139519898,
-      "previous_close": 1689.5111818895598,
-      "resistance_prior_19": 1702.0392288143998,
-      "support_prior_19": 1680.7782481401198,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": "flare:0x1502fa4be69d526124d453619276faccab275d3d:1795186800:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
         "status": "deferred_capacity",
         "articles": []
-      }
+      },
+      "last_closed_at": 1795716000
     },
     "flare:0xfbda5f676cb37624f28265a144a48b0d6e87d3b6": {
       "status": "unavailable",
@@ -607,6 +621,20 @@
         "articles": []
       },
       "last_closed_at": 1795654800
+    },
+    "flare:0x140d8d3649ec605cf69018c627fb44ccc76ec89f": {
+      "status": "sufficient",
+      "last_closed_at": 1795737600,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.012746949076594799,
+      "previous_close": 0.012725958576444799,
+      "resistance_prior_19": 0.0132126410800131,
+      "support_prior_19": 0.012725958576444799,
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
     },
     "ethereum:0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3": {
       "status": "unavailable",
@@ -635,39 +663,34 @@
       "last_closed_at": 1795683600
     },
     "ethereum:0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 94.2420187033158,
-      "previous_close": 93.01524765062689,
-      "resistance_prior_19": 96.4826233964327,
-      "support_prior_19": 92.96134363426489,
-      "new_event": false,
-      "last_event_key": "ethereum:0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9:1795186800:PROVISIONAL_HOURLY_BREAKDOWN",
-      "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      }
-    },
-    "ethereum:0xf939e0a03fb07f59a73314e73794be0e57ac1b4e": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
-      "last_event_key": "ethereum:0xf939e0a03fb07f59a73314e73794be0e57ac1b4e:1795528800:PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_event_key": "ethereum:0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9:1795186800:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
-        "status": "unavailable",
-        "source": "GDELT DOC 2.0",
-        "sample_count_24h": null,
-        "articles": [],
-        "trend_status": "not_established",
-        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
-        "error": "HTTP Error 429: Too Many Requests"
+        "status": "deferred_capacity",
+        "articles": []
       },
-      "last_closed_at": 1795626000
+      "last_closed_at": 1795716000
+    },
+    "ethereum:0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.27645217305086894,
+      "previous_close": 0.27424674746281397,
+      "resistance_prior_19": 0.278930689012637,
+      "support_prior_19": 0.27216010675724894,
+      "new_event": false,
+      "last_event_key": "ethereum:0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c:1795683600:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_news": {
+        "status": "deferred_capacity",
+        "articles": []
+      }
     },
     "ethereum:0xdc035d45d973e3ec169d2276ddab16f1e407384f": {
       "status": "unavailable",
@@ -687,29 +710,43 @@
       },
       "last_closed_at": 1795590000
     },
-    "ethereum:0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c": {
+    "ethereum:0x6c3ea9036406852006290770bedfcaba0e23a0e8": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
-      "last_event_key": "ethereum:0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c:1795683600:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_event_key": null,
+      "last_news": null
+    },
+    "ethereum:0xf939e0a03fb07f59a73314e73794be0e57ac1b4e": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": "ethereum:0xf939e0a03fb07f59a73314e73794be0e57ac1b4e:1795528800:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
+        "status": "unavailable",
+        "source": "GDELT DOC 2.0",
+        "sample_count_24h": null,
+        "articles": [],
+        "trend_status": "not_established",
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
+        "error": "HTTP Error 429: Too Many Requests"
       },
-      "last_closed_at": 1795683600
+      "last_closed_at": 1795626000
     },
     "ethereum:0xa038a26bf960451b8ce75ec4c92013c6307f8e4e": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 1.21275444883355,
-      "previous_close": 1.21214599329967,
+      "last_close": 1.2047497844525799,
+      "previous_close": 1.20138598420297,
       "resistance_prior_19": 1.21854074103669,
-      "support_prior_19": 1.16855428557777,
+      "support_prior_19": 1.19535473460687,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
@@ -733,22 +770,32 @@
       "last_news": null,
       "last_closed_at": 1795683600
     },
-    "ethereum:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": {
+    "ethereum:0x45804880de22913dafe09f4980848ece6ecbaf78": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.999229220395112,
-      "previous_close": 1.00064349246269,
-      "resistance_prior_19": 1.0008376934696999,
-      "support_prior_19": 0.999129313845833,
+      "last_close": 3570.9669210396796,
+      "previous_close": 3548.0572337500694,
+      "resistance_prior_19": 3577.41603937902,
+      "support_prior_19": 3535.2948681028797,
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
+    "ethereum:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": "ethereum:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48:1795388400:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
         "status": "deferred_capacity",
         "articles": []
-      }
+      },
+      "last_closed_at": 1795716000
     },
     "ethereum:0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": {
       "status": "unavailable",
@@ -777,41 +824,49 @@
       "last_closed_at": 1795683600
     },
     "ethereum:0xdac17f958d2ee523a2206206994597c13d831ec7": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": "ethereum:0xdac17f958d2ee523a2206206994597c13d831ec7:1795654800:PROVISIONAL_HOURLY_BREAKOUT",
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": true,
+      "signal": "PROVISIONAL_HOURLY_BREAKDOWN",
+      "last_close": 0.997870807582452,
+      "previous_close": 0.9985581666348019,
+      "resistance_prior_19": 0.9997759545386881,
+      "support_prior_19": 0.9985581666348019,
+      "new_event": true,
+      "last_event_key": "ethereum:0xdac17f958d2ee523a2206206994597c13d831ec7:1795741200:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      },
-      "last_closed_at": 1795654800
+        "status": "unavailable",
+        "source": "GDELT DOC 2.0",
+        "sample_count_24h": null,
+        "articles": [],
+        "trend_status": "not_established",
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
+        "error": "HTTP Error 429: Too Many Requests"
+      }
     },
     "ethereum:0x2260fac5e5542a773aa44fbcfedf7c193bc2c599": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 60489.77122114509,
-      "previous_close": 60531.74952579219,
+      "last_close": 60604.796890480495,
+      "previous_close": 60986.538291586694,
       "resistance_prior_19": 61255.8507579414,
-      "support_prior_19": 60165.380753287296,
+      "support_prior_19": 60200.36389595109,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
     },
-    "ethereum:0x72dfb2e44f59c5ad2bafe84314e5b99a7cd5075e": {
+    "ethereum:0x4a220e6096b25eadb88358cb44068a3248254675": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
       "last_event_key": null,
-      "last_news": null,
-      "last_closed_at": 1795683600
+      "last_news": null
     },
     "ethereum:0x7ad1a8fc42ac150b04ded5825d21a0c90b6d28d8": {
       "status": "unavailable",
@@ -824,30 +879,20 @@
       "last_closed_at": 1795654800
     },
     "ethereum:0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null,
-      "last_closed_at": 1795561200
-    },
-    "ethereum:0xb1dc57ed65b3bce06e1d5645d0304fe84cc8963d": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.0148374708105287,
-      "previous_close": 0.0196038298057649,
-      "resistance_prior_19": 0.0214158269522343,
-      "support_prior_19": 0.008167458200287369,
+      "last_close": 3.6213811483481297e-06,
+      "previous_close": 3.6237984203102298e-06,
+      "resistance_prior_19": 3.6573310916226094e-06,
+      "support_prior_19": 3.59830812871469e-06,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
     },
-    "solana:BPxxfRCXkUVhig4HS1Lh7kZqV6SPJhzfEk4x6fVBjPCy": {
+    "ethereum:0xa1313eb9f3a445606d9583bcac3ebeb56a858279": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
@@ -856,15 +901,37 @@
       "last_event_key": null,
       "last_news": null
     },
-    "solana:9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump": {
+    "solana:4CxjZyMNoF1p6eXHXHv1TWpS2X47CuUmLwtGe18spump": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
+      "last_event_key": "solana:4CxjZyMNoF1p6eXHXHv1TWpS2X47CuUmLwtGe18spump:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_news": {
+        "status": "unavailable",
+        "source": "GDELT DOC 2.0",
+        "sample_count_24h": null,
+        "articles": [],
+        "trend_status": "not_established",
+        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
+        "error": "HTTP Error 429: Too Many Requests"
+      },
+      "last_closed_at": 1795716000
+    },
+    "solana:pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.002589591181293888,
+      "previous_close": 0.0025969326969382278,
+      "resistance_prior_19": 0.002655121007241322,
+      "support_prior_19": 0.00255827215455157,
+      "new_event": false,
       "last_event_key": null,
-      "last_news": null,
-      "last_closed_at": 1795683600
+      "last_news": null
     },
     "solana:Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump": {
       "status": "unavailable",
@@ -884,82 +951,7 @@
       },
       "last_closed_at": 1795654800
     },
-    "solana:4CxjZyMNoF1p6eXHXHv1TWpS2X47CuUmLwtGe18spump": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": true,
-      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
-      "last_close": 0.006083281806548771,
-      "previous_close": 0.0056159538632620494,
-      "resistance_prior_19": 0.005698420943399036,
-      "support_prior_19": 0.004446853173128439,
-      "new_event": true,
-      "last_event_key": "solana:4CxjZyMNoF1p6eXHXHv1TWpS2X47CuUmLwtGe18spump:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
-      "last_news": {
-        "status": "unavailable",
-        "source": "GDELT DOC 2.0",
-        "sample_count_24h": null,
-        "articles": [],
-        "trend_status": "not_established",
-        "note": "Sampled relevant news is not proof of organic trends or total web coverage.",
-        "error": "HTTP Error 429: Too Many Requests"
-      }
-    },
-    "solana:pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.0025980818542271846,
-      "previous_close": 0.00255827215455157,
-      "resistance_prior_19": 0.002655121007241322,
-      "support_prior_19": 0.00255827215455157,
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "solana:2j5SaS7xy776qCBpyPQbZjyQSAtKiFgrwjfErthnW2ZM": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": "solana:2j5SaS7xy776qCBpyPQbZjyQSAtKiFgrwjfErthnW2ZM:1795280400:PROVISIONAL_HOURLY_BREAKOUT",
-      "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      },
-      "last_closed_at": 1795654800
-    },
-    "solana:Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.018978060882704303,
-      "previous_close": 0.01833089477210579,
-      "resistance_prior_19": 0.01924247952812312,
-      "support_prior_19": 0.017667473878598277,
-      "new_event": false,
-      "last_event_key": "solana:Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump:1795590000:PROVISIONAL_HOURLY_BREAKOUT",
-      "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      }
-    },
-    "solana:6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump": {
-      "status": "unavailable",
-      "news_trigger": false,
-      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
-      "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "solana:6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN": {
+    "solana:9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
@@ -968,6 +960,54 @@
       "last_event_key": null,
       "last_news": null,
       "last_closed_at": 1795683600
+    },
+    "solana:SPCXxcqXj6e5dJDVNovHN8744zkbhM2bYudU45BimGb": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
+    "solana:2j5SaS7xy776qCBpyPQbZjyQSAtKiFgrwjfErthnW2ZM": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.008713809716716902,
+      "previous_close": 0.008853564750224774,
+      "resistance_prior_19": 0.009396900627290908,
+      "support_prior_19": 0.00858206363789359,
+      "new_event": false,
+      "last_event_key": "solana:2j5SaS7xy776qCBpyPQbZjyQSAtKiFgrwjfErthnW2ZM:1795280400:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_news": {
+        "status": "deferred_capacity",
+        "articles": []
+      }
+    },
+    "solana:Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": "solana:Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump:1795590000:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_news": {
+        "status": "deferred_capacity",
+        "articles": []
+      },
+      "last_closed_at": 1795716000
+    },
+    "solana:ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
     },
     "solana:So11111111111111111111111111111111111111112": {
       "status": "unavailable",
@@ -988,33 +1028,29 @@
     },
     "solana:DtcicPCKTKeAh7TDEzTym3hXeoHAoMiBdYJhMYxZpump": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.0064438816775551026,
-      "previous_close": 0.006285190936925207,
-      "resistance_prior_19": 0.006655395719830544,
-      "support_prior_19": 0.005685075581871109,
-      "new_event": false,
-      "last_event_key": "solana:DtcicPCKTKeAh7TDEzTym3hXeoHAoMiBdYJhMYxZpump:1795528800:PROVISIONAL_HOURLY_BREAKDOWN",
+      "news_trigger": true,
+      "signal": "PROVISIONAL_HOURLY_BREAKOUT",
+      "last_close": 0.007460520038134671,
+      "previous_close": 0.006939715494809267,
+      "resistance_prior_19": 0.007233816936686233,
+      "support_prior_19": 0.005796569855518302,
+      "new_event": true,
+      "last_event_key": "solana:DtcicPCKTKeAh7TDEzTym3hXeoHAoMiBdYJhMYxZpump:1795741200:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
         "status": "deferred_capacity",
         "articles": []
       }
     },
-    "solana:4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz": {
+    "solana:PgFtGGquvnv2zEkjG2N2QPvBTBrafuExGYEqahRpump": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
       "new_event": false,
-      "last_event_key": "solana:4kjruqGHDsSqkMdFfCjV7Vb62HPFhtXyWc2t6JpQzDnz:1795528800:PROVISIONAL_HOURLY_BREAKOUT",
-      "last_news": {
-        "status": "deferred_capacity",
-        "articles": []
-      },
-      "last_closed_at": 1795654800
+      "last_event_key": null,
+      "last_news": null
     },
     "solana:9hjBLBrc7WZW2H8UQvBAvG5WiTZotXUv2Bdcn4f4pump": {
       "status": "unavailable",
@@ -1045,23 +1081,19 @@
     },
     "solana:xc9F6cbuPhZPEQSrJRQSkcNYFTTNLifxcHp7vwXpump": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": true,
       "signal": "PROVISIONAL_HOURLY_BREAKOUT",
-      "last_close": 2.361733517413768,
-      "previous_close": 2.3120139018184034,
-      "resistance_prior_19": 2.3120139018184034,
-      "support_prior_19": 1.9114211988738967,
+      "last_close": 2.5681307979738826,
+      "previous_close": 2.5436635174456583,
+      "resistance_prior_19": 2.5436635174456583,
+      "support_prior_19": 2.0672709019981124,
       "new_event": true,
-      "last_event_key": "solana:xc9F6cbuPhZPEQSrJRQSkcNYFTTNLifxcHp7vwXpump:1795716000:PROVISIONAL_HOURLY_BREAKOUT",
+      "last_event_key": "solana:xc9F6cbuPhZPEQSrJRQSkcNYFTTNLifxcHp7vwXpump:1795741200:PROVISIONAL_HOURLY_BREAKOUT",
       "last_news": {
-        "status": "ambiguous_identity",
-        "source": "GDELT DOC 2.0",
-        "sample_count_24h": null,
-        "articles": [],
-        "trend_status": "not_established",
-        "note": "Sampled relevant news is not proof of organic trends or total web coverage."
+        "status": "deferred_capacity",
+        "articles": []
       }
     },
     "solana:Ya9PEJA9UZmbT5aim46TA6cPCkTNfsqEn1aEVrnpump": {
@@ -1073,7 +1105,7 @@
       "last_event_key": null,
       "last_news": null
     },
-    "solana:9QT8K685Hrae4k11dhGXirdtpfAaimExtyfwt8cPpump": {
+    "solana:7HgfXftRBBqsYtAEYcqjGLQrNJLL6Tww9ek4rE3Apump": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
@@ -1084,14 +1116,14 @@
     },
     "solana:B34nXKzCgsJb9ChLuSHPRpXLE3WFSWyeT8Cqkzzmpump": {
       "status": "sufficient",
-      "last_closed_at": 1795716000,
+      "last_closed_at": 1795741200,
       "reason": "closed_candles_available",
       "news_trigger": false,
       "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 0.0013843176711525235,
-      "previous_close": 0.0014012087990085494,
-      "resistance_prior_19": 0.0022456168592671004,
-      "support_prior_19": 0.0013698724073192721,
+      "last_close": 0.0014478349461037338,
+      "previous_close": 0.001380978597387359,
+      "resistance_prior_19": 0.0021214344295909003,
+      "support_prior_19": 0.0013042027799512201,
       "new_event": false,
       "last_event_key": "solana:B34nXKzCgsJb9ChLuSHPRpXLE3WFSWyeT8Cqkzzmpump:1795561200:PROVISIONAL_HOURLY_BREAKDOWN",
       "last_news": {
@@ -1113,6 +1145,15 @@
       "last_event_key": null,
       "last_news": null
     },
+    "solana:2Lw9FQA1iAwg5Wo1NTh8GTs3zmVQc7XHGBbexqZgqtWJ": {
+      "status": "unavailable",
+      "news_trigger": false,
+      "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
+      "reason": "HTTP Error 429: Too Many Requests",
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
     "solana:38M2z4UCfZEkUHFzD48vhKQhFhNyRGto8pZbLjNipump": {
       "status": "unavailable",
       "news_trigger": false,
@@ -1122,25 +1163,25 @@
       "last_event_key": null,
       "last_news": null
     },
+    "solana:9TKbd3VFaMSXsEAicD9JVQWpWwAoLi4fSgWmZL2cpump": {
+      "status": "sufficient",
+      "last_closed_at": 1795741200,
+      "reason": "closed_candles_available",
+      "news_trigger": false,
+      "signal": "NO_NEW_BOUNDARY_CROSSING",
+      "last_close": 0.0004982776670363817,
+      "previous_close": 0.0006492441969114997,
+      "resistance_prior_19": 0.0006492441969114997,
+      "support_prior_19": 1.2635632655628145e-05,
+      "new_event": false,
+      "last_event_key": null,
+      "last_news": null
+    },
     "solana:6C9r2gzu8Pr54hTevHo3x5gSj9JqtpApj7obJnrtpump": {
       "status": "unavailable",
       "news_trigger": false,
       "signal": "NO_CONFIRMED_TECHNICAL_EVENT",
       "reason": "HTTP Error 429: Too Many Requests",
-      "new_event": false,
-      "last_event_key": null,
-      "last_news": null
-    },
-    "solana:DVdWuNK8ncn79B6z8nCiwcNAiwyFcmBPfChgxJGTpump": {
-      "status": "sufficient",
-      "last_closed_at": 1795716000,
-      "reason": "closed_candles_available",
-      "news_trigger": false,
-      "signal": "NO_NEW_BOUNDARY_CROSSING",
-      "last_close": 7.552750602630376e-05,
-      "previous_close": 9.131934459579133e-05,
-      "resistance_prior_19": 0.00021295088932381603,
-      "support_prior_19": 5.8657376503182036e-05,
       "new_event": false,
       "last_event_key": null,
       "last_news": null
